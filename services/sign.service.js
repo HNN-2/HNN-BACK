@@ -243,6 +243,10 @@ class UserService extends SignService {
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
             this.signRepository.returnPostOfLoginUser(userId);
+        
+        const PostOfMypage = getPostOfLoginUserData.map((post) =>{
+            
+        })
         return { success: true };
     };
 }
