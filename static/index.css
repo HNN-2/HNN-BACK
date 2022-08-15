@@ -1,0 +1,44 @@
+@import "../static/config/reset.css";
+
+body {
+  background-color: black;
+}
+.div {
+  width: 500px;
+  height: 300px;
+  color: wheat;
+
+  margin: auto;
+  margin-top: 300px;
+
+  padding-top: 10px;
+
+  border-width: thick;
+  border-style: double;
+  border-color: aliceblue;
+}
+.text {
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+.textarea_box {
+  margin-top: 33px;
+
+  width: 500px;
+  height: 245px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#text {
+  margin-bottom: 10px;
+}
+
+#textarea {
+  width: 400px;
+  overflow: auto;
+}

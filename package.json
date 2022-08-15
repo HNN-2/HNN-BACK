@@ -1,0 +1,37 @@
+{
+    "name": "5week_submit",
+    "version": "1.0.0",
+    "description": "항해99 8기 F반 2조 (Node.js) 팀과제",
+    "main": "app.js",
+    "scripts": {
+        "test": "jest",
+        "start": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Minsun91/Node.js-3rd.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Minsun91/Node.js-3rd/issues"
+    },
+    "homepage": "https://github.com/Minsun91/Node.js-3rd#readme",
+    "dependencies": {
+        "body-parser": "^1.20.0",
+        "cookie-parser": "^1.4.6",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "joi": "^17.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "mysql2": "^2.3.3",
+        "nodemon": "^2.0.19",
+        "sequelize": "^6.21.3",
+        "socket.io": "^4.5.1"
+    },
+    "devDependencies": {
+        "jest": "^28.1.3",
+        "sequelize-cli": "^6.4.1"
+    }
+}
