@@ -14,13 +14,13 @@ module.exports = (req, res, next) => {
             });
             return;
         }
-
+        
         const tokenvoll = jwt.verify(token, env.secretKey);
         res.locals.userId = tokenvoll.userId;
-
-        res.locals.nickname = tokenvoll.nickname;
-        res.locals.MBTI = tokenvoll.MBTI;
-        res.locals.profilePicture = tokenvoll.profilePicture;
+        const userData = signRepository.returnUserStatus(tokenvoll.userId);
+        res.locals.nickname = userData.nickname;
+        res.locals.MBTI = userData.MBTI;
+        res.locals.profilePicture = userData.profilePicture;
         next();
     } catch (err) {
         next(err);

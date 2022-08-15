@@ -27,8 +27,9 @@ router.post("/checkNickname", signController.checkDupNickname);
 //완료
 router.post("/out", authMiddleware, signController.logout);
 
-//마이페이지
-router.patch("user/:userId", authMiddleware, userController.updateUserProfile);
+//유저 정보 수정
+router.patch("/user/:userId", authMiddleware, userController.updateUserProfile);
 
-router.get("sign/user/:userId", authMiddleware, userController.postOfLoginUser);
+//마이페이지 자신이 작성한 게시물 데이터
+router.get("/user/:userId", authMiddleware, userController.postOfLoginUser);
 module.exports = router;

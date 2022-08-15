@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User ,Post} = require("../models");
 
 class UserRepository {
     //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
@@ -62,16 +62,17 @@ class UserRepository {
     };
 
     returnPostOfLoginUser = async (userId) => {
-        const PostsOfLoginUserData = await User.findAll({
+        const PostsOfLoginUserData = await User.findOne({
             include: [
                 {
                     model: Post,
+                    
                 },
             ],
             where: { userId },
         });
-        console.log(PostsOfLoginUserData);
-        return PostsOfLoginUserData;
+        
+        return PostsOfLoginUserData.Posts;
     };
 }
 

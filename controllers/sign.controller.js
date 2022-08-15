@@ -206,6 +206,12 @@ class UserController {
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
         const { userId } = req.params;
+        const postOfLoginUserData = await this.userService.getPostOfLoginUser(userId)
+        res.send({
+            success : true,
+            postOfLoginUserData
+
+        })
     };
 }
 module.exports = {
