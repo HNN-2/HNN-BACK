@@ -18,7 +18,7 @@ class SignService {
             return {
                 msg: "회원 정보가 일치하지 않습니다.",
                 success: false,
-                status: 400,
+                
             };
         }
         if (userData.password === this.changePasswordToHash(password)) {
@@ -26,10 +26,20 @@ class SignService {
                 {
                     userId: userData.userId,
                 },
-                env.secretKey
+                env.secretKey,
+                { expiresIn: "1h" }
             );
+            const refreshToken = jwt.sign(
+                {
+                    userId: userData.userId,
+                },
+                env.secretKey,
+                { expiresIn: "7d" }
+            );
+            await this.signRepository.updateRefreshToken(refreshToken,userData.userId);
             return {
                 token,
+                
                 success: true,
             };
         } else
@@ -155,7 +165,6 @@ class SignService {
     checkPassword = async (password, confirmPw) => {
         if (password !== confirmPw) {
             return {
-                code: 400,
                 msg: "비밀번호가 일치하지 않습니다.",
                 success: false,
             };
@@ -243,10 +252,8 @@ class UserService extends SignService {
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
             this.signRepository.returnPostOfLoginUser(userId);
-        
-        const PostOfMypage = getPostOfLoginUserData.map((post) =>{
-            
-        })
+
+        const PostOfMypage = getPostOfLoginUserData.map((post) => {});
         return { success: true };
     };
 }
