@@ -256,6 +256,7 @@ class UserService extends SignService {
 
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
+
             await this.signRepository.returnPostOfLoginUser(userId);
         // console.log(getPostOfLoginUserData)
         const PostOfMypage = getPostOfLoginUserData.map(async(post, idx) => {
@@ -272,6 +273,7 @@ class UserService extends SignService {
             like :  this.signRepository.returnLikeOfLoginUserPosts(post.postId),
 
             }
+
 
         });
         console.log(PostOfMypage)
