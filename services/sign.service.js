@@ -18,7 +18,6 @@ class SignService {
             return {
                 msg: "회원 정보가 일치하지 않습니다.",
                 success: false,
-                
             };
         }
         if (userData.password === this.changePasswordToHash(password)) {
@@ -36,10 +35,13 @@ class SignService {
                 env.secretKey,
                 { expiresIn: "7d" }
             );
-            await this.signRepository.updateRefreshToken(refreshToken,userData.userId);
+            await this.signRepository.updateRefreshToken(
+                refreshToken,
+                userData.userId
+            );
             return {
                 token,
-                
+
                 success: true,
             };
         } else

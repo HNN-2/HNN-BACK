@@ -13,15 +13,16 @@ class PostService {
                 return {
                     title: post.title,
                     content: post.content,
-                    createdAt: post.createdAt,
-                    songTitle: post.songTitle,
-                    singer: post.singer,
-
                     nickname: allPost.Locals[i].dataValues.nickname,
-                    MBTI: allPost.Locals[i].dataValues.MBTI,
                     profilePicture: allPost.Locals[i].dataValues.profilePicture,
-
+                    MBTI: allPost.Locals[i].dataValues.MBTI,
+                    createdAt: post.createdAt,
                     // like: allPost.like[index],
+                    //commentNum:
+                    info: {
+                        songTitle: post.songTitle,
+                        singer: post.singer,
+                    },
                 };
             }
         });
@@ -30,55 +31,22 @@ class PostService {
             return b.createdAt - a.createdAt;
         });
 
-        return {
-            Posts,
-        };
+        if (Posts) {
+            return { Posts, success: true };
+        } else return { success: false };
     };
 
     getPost = async (postId) => {
         const getPostData = await this.postRepository.findOnePost(postId);
+        const getCommentData = await this.postRepository.findComments(postId);
 
-        const Poster = {
-            poster: {
-                nickname: getPostData.detailPostUser["User.nickname"],
-                title: getPostData.detailPostUser.title,
-                content: getPostData.detailPostUser.content,
-                MTBI: getPostData.detailPostUser["User.MBTI"],
-                profilePicture:
-                    getPostData.detailPostUser["User.profilePicture"],
-                createdAt: getPostData.detailPostUser.createdAt,
-                like: getPostData.like,
-                imageUrl: getPostData.imageUrl,
-            },
-            info: {
-                songTitle: getPostData.detailPostUser.songTitle,
-                singer: getPostData.detailPostUser.singer,
-            },
+        console.log(
+            "서비스",
+            getPostData.detailPostUser,
+            getCommentData.detailCommentUser
+        );
 
-            commenter: {
-                nickname: getPostData.detailCommentUser["User.nickname"],
-                content: getPostData.detailCommentUser.content,
-                profilePicture:
-                    getPostData.detailCommentUser["User.profilePicture"],
-                MTBI: getPostData.detailCommentUser["User.MBTI"],
-                createdAt: getPostData.detailCommentUser.createdAt,
-            },
-        };
-
-        console.log(Poster);
-
-        // const commenter = {
-        //     nickname,
-        //     content,
-        //     profilePicture,
-        //     MBTI,
-        //     createdAt,
-        // };
-
-        // console.log("service", Poster);
-        return {
-            Poster,
-        };
+        return { poster: getPostData, commenter: getCommentData };
     };
 
     createPost = async (
@@ -101,7 +69,7 @@ class PostService {
         );
 
         return {
-            status: 200,
+            success: true,
             msg: "게시물이 생성되었습니다!",
         };
     };
@@ -109,13 +77,14 @@ class PostService {
     updatePost = async (postId, title, content, imageUrl) => {
         await this.postRepository.updatePost(postId, title, content, imageUrl);
         return {
+            success: true,
             msg: "게시물이 수정되었습니다.",
         };
     };
 
     deletePost = async (postId) => {
         await this.postRepository.deletePost(postId);
-        return { msg: "게시물 삭제에 성공했습니다." };
+        return { success: true, msg: "게시물 삭제에 성공했습니다." };
     };
 }
 
