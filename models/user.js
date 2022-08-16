@@ -12,13 +12,18 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: "userId",
                 onDelete: "cascade",
                 onUpdate: "cascade",
-            }),
-                models.User.hasMany(models.Like, {
-                    foreignKey: "userId",
-                    onDelete: "cascade",
-                    onUpdate: "cascade",
-                });
+            });
+            models.User.hasMany(models.Like, {
+                foreignKey: "userId",
+                onDelete: "cascade",
+                onUpdate: "cascade",
+            });
             models.User.hasMany(models.Comment, {
+                foreignKey: "userId",
+                onDelete: "cascade",
+                onUpdate: "cascade",
+            });
+            models.User.hasMany(models.Like, {
                 foreignKey: "userId",
                 onDelete: "cascade",
                 onUpdate: "cascade",
@@ -36,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             password: DataTypes.STRING,
             MBTI: DataTypes.STRING,
             profilePicture: DataTypes.STRING,
-            refreshToken : DataTypes.STRING
+            refreshToken: DataTypes.STRING,
         },
         {
             sequelize,

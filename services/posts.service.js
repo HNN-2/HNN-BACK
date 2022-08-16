@@ -8,23 +8,24 @@ class PostService {
 
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
+            const like = allPost.like;
 
-            for (let i = 2; i < Locals.length; i++) {
-                return {
-                    title: post.title,
-                    content: post.content,
-                    nickname: allPost.Locals[i].dataValues.nickname,
-                    profilePicture: allPost.Locals[i].dataValues.profilePicture,
-                    MBTI: allPost.Locals[i].dataValues.MBTI,
-                    createdAt: post.createdAt,
-                    // like: allPost.like[index],
-                    //commentNum:
-                    info: {
-                        songTitle: post.songTitle,
-                        singer: post.singer,
-                    },
-                };
-            }
+            // for (let i = 0; i <Locals.length; i++) {
+            return {
+                title: post.title,
+                content: post.content,
+                nickname: allPost.Locals[i].dataValues.nickname,
+                profilePicture: allPost.Locals[i].dataValues.profilePicture,
+                MBTI: allPost.Locals[i].dataValues.MBTI,
+                createdAt: post.createdAt,
+                like: allPost.like[i],
+                //commentNum:
+                info: {
+                    songTitle: post.songTitle,
+                    singer: post.singer,
+                },
+            };
+            // }
         });
 
         Posts.sort((a, b) => {
@@ -39,8 +40,17 @@ class PostService {
     getPost = async (postId) => {
         const getPostData = await this.postRepository.findOnePost(postId);
         const getCommentData = await this.postRepository.findComments(postId);
+        // console.log(getPostData.dataValues.Likes);
 
-        return { poster: getPostData, commenter: getCommentData };
+        const postLikeData = getPostData.dataValues.Likes;
+        console.log(postLikeData.length);
+        delete getPostData.dataValues.Likes;
+
+        return {
+            poster: getPostData,
+            like: postLikeData.length,
+            commenter: getCommentData,
+        };
     };
 
     createPost = async (
