@@ -20,6 +20,7 @@ class SignService {
                 success: false,
             };
         }
+        console.log(userData.password, this.changePasswordToHash(password))
         if (userData.password === this.changePasswordToHash(password)) {
             const token = jwt.sign(
                 {
@@ -256,7 +257,7 @@ class UserService extends SignService {
             this.signRepository.returnPostOfLoginUser(userId);
         console.log(getPostOfLoginUserData)
         const PostOfMypage = getPostOfLoginUserData.map((post) => {
-            
+
         });
         return { success: true };
     };
