@@ -6,31 +6,31 @@ class PostRepository {
     findAllPost = async () => {
         const posts = await Post.findAll();
         const Locals = [];
+        const like = [];
 
         for (let i = 0; i < posts.length; i++) {
             const locals = await User.findOne({
                 where: { userId: posts[i].userId },
             }); //locals에는 posts.userId로 찾은 user 데이터가 담겨있다.
+            const temp = await Like.findAll({
+                where: { postId: posts[i].postId },
+            });
+            like.push(temp.length);
+            console.log(temp.length);
             Locals.push(locals);
         }
-        return { posts, Locals };
+        return { posts, Locals, like };
     };
-
-    // const like = [];
-    // for (let i = 0; i < posts.length; i++) {
-    //     const temp = await Like.findAll({
-    //         where: { postId: posts[i].postId },
-    //     });
-    //     like.push(temp.length);
-    // }
-    // return { posts, like };
-    // };
 
     findOnePost = async (postId) => {
         //게시글 상세 조회 (댓글 없을때)
         const detailPostUser = await Post.findOne({
             where: { postId },
             include: [
+                {
+                    model: Like,
+                    attributes: ["likeId"],
+                },
                 {
                     model: User,
                     attributes: ["MBTI", "profilePicture", "nickname"],
@@ -45,9 +45,10 @@ class PostRepository {
                 "songTitle",
                 "singer",
             ],
-            raw: true,
+            // raw: true,
         });
-        return { detailPostUser };
+
+        return detailPostUser;
     };
 
     //게시글의 댓글 찾기
@@ -64,7 +65,7 @@ class PostRepository {
             raw: true,
         });
 
-        return { detailCommentUser };
+        return detailCommentUser;
     };
 
     createPost = async (
