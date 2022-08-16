@@ -8,21 +8,18 @@ class LikesService {
         const currPost = await LikeRepository.findOne({
             where: { postId },
         });
-        if (!currPost) {
-            return {
-                msg: "해당되는 포스트가 없습니다.",
-            };
-        }
-        const exist = await this.likeRepository.checkExistLikeAndDelete(
-            postId,
-            userId
-        );
+        // if (!currPost) {
+        //     return {
+        //         msg: "해당되는 포스트가 없습니다.",
+        //     };
+        // }
+        // const exist = await this.likeRepository.checkExistLikeAndDelete(postId, userId);
 
-        if (exist) {
-            return {
-                msg: `${postId}번 게시물 좋아요 삭제!`,
-            };
-        }
+        // if (exist) {
+        //     return {
+        //         msg: `${postId}번 게시물 좋아요 삭제!`,
+        //     };
+        // }
         await this.likeRepository.createPostLike(postId, userId);
         return {
             msg: `${postId}번 게시물 좋아요!`,
