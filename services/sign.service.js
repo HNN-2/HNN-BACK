@@ -42,7 +42,9 @@ class SignService {
             );
             return {
                 token,
-
+                nickname : userData.nickname,
+                MBTI : userData.MBTI,
+                profilePicture : userData.profilePicture,
                 success: true,
             };
         } else
@@ -254,11 +256,25 @@ class UserService extends SignService {
 
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
-            this.signRepository.returnPostOfLoginUser(userId);
-        console.log(getPostOfLoginUserData)
-        const PostOfMypage = getPostOfLoginUserData.map((post) => {
+            await this.signRepository.returnPostOfLoginUser(userId);
+        // console.log(getPostOfLoginUserData)
+        const PostOfMypage = getPostOfLoginUserData.map(async(post, idx) => {
+            
+             return {
+            title : post.title,
+            content : post.content,
+            createdAt : post.createdAt,
+            info: {
+                songTitle : post.songTitle,
+                singer : post.singer
+            },
+            commentNum :  this.signRepository.returnCommentsNumOfLoginUserPosts(post.postId),
+            like :  this.signRepository.returnLikeOfLoginUserPosts(post.postId),
+
+            }
 
         });
+        console.log(PostOfMypage)
         return { success: true };
     };
 }
