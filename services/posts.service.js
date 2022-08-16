@@ -40,12 +40,6 @@ class PostService {
         const getPostData = await this.postRepository.findOnePost(postId);
         const getCommentData = await this.postRepository.findComments(postId);
 
-        console.log(
-            "서비스",
-            getPostData.detailPostUser,
-            getCommentData.detailCommentUser
-        );
-
         return { poster: getPostData, commenter: getCommentData };
     };
 
