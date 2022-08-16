@@ -27,7 +27,7 @@ class PostRepository {
     // };
 
     findOnePost = async (postId) => {
-        //join 사용해서
+        //게시글 상세 조회 (댓글 없을때)
         const detailPostUser = await Post.findOne({
             where: { postId },
             include: [
@@ -38,33 +38,33 @@ class PostRepository {
             ],
             attributes: [
                 "title",
-                "content",
                 "userId",
-                "songTitle",
-                "singer",
                 "createdAt",
                 "imageUrl",
+                "content",
+                "songTitle",
+                "singer",
             ],
             raw: true,
         });
-        const detailCommentUser = await Comment.findOne({
+        return { detailPostUser };
+    };
+
+    //게시글의 댓글 찾기
+    findComments = async (postId) => {
+        const detailCommentUser = await Comment.findAll({
             where: { postId },
             include: [
                 {
                     model: User,
-                    attributes: ["MBTI", "nickname"],
+                    attributes: ["MBTI", "nickname", "profilePicture"],
                 },
             ],
             attributes: ["content", "userId", "createdAt"],
             raw: true,
         });
 
-        // await Post.userId.findOne(
-        //     { MBTI, profilePicture, nickname },
-        //     { where: userId }
-        // );
-
-        return { detailPostUser, detailCommentUser };
+        return { detailCommentUser };
     };
 
     createPost = async (
@@ -100,19 +100,6 @@ class PostRepository {
 
         return updatePostData;
     };
-
-    //포스트 아이디로 포스트를 뒤져 비밀번호가 같으면 true
-    //아니면 false
-    // checkPw = async (postId, pw) => {
-    //     const checkPostPwData = await Post.findOne({
-    //         where: { postId },
-    //     });
-    //     if (pw === checkPostPwData.pw) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // };
 
     deletePost = async (postId) => {
         await Post.destroy({

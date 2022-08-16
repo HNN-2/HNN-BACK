@@ -15,12 +15,9 @@ class PostsController {
         const { postId } = req.params;
 
         const postData = await this.postService.getPost(Number(postId));
-        // const infoData = await this.postService.getPost(songTitle, singer);
-        // const commentData = await this.postService.getPost()
 
         res.json({
-            data: postData.Poster,
-            // data: infoData.Post,
+            data: postData,
         });
     };
 
