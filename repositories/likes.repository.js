@@ -1,7 +1,7 @@
 const { Like, Post } = require("../models");
 
 class LikeRepository {
-    //Like 테이블에 params로 받아온 postId 있는지 확인
+    // Like 테이블에 params로 받아온 postId 있는지 확인
     // checkPost = async (postId) => {
     //     const checkPostDate = await Like.findOne({
     //         where: { postId },

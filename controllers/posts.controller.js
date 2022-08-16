@@ -7,21 +7,26 @@ class PostsController {
     //전체 게시물 조회, 상세페이지
     getAllPosts = async (req, res, next) => {
         const postsData = await this.postService.findAllPost();
-        res.json({ data: postsData.Posts });
+        return res.send({
+            success: postsData.success,
+            data: postsData.Posts,
+        });
+        // res.json({ data: postsData.Posts });
     };
 
     //상세 게시물 조회
     getOnePost = async (req, res, next) => {
         const { postId } = req.params;
+        const postData = await this.postService.getPost(postId);
 
-        const postData = await this.postService.getPost(Number(postId));
-        // const infoData = await this.postService.getPost(songTitle, singer);
-        // const commentData = await this.postService.getPost()
-
-        res.json({
-            data: postData.Poster,
-            // data: infoData.Post,
+        return res.send({
+            success: true,
+            data: postData,
         });
+
+        // res.json({
+        //     data: postData.Poster,
+        // });
     };
 
     //게시글 생성
@@ -38,7 +43,12 @@ class PostsController {
             userId,
             MBTI
         );
-        res.json({ data: createPostData.msg });
+        return res.send({
+            success: createPostData.success,
+            data: createPostData.Posts,
+            msg: "게시물이 생성되었습니다!",
+        });
+        // res.json({ data: createPostData.msg });
     };
 
     //게시글 수정
@@ -54,7 +64,12 @@ class PostsController {
         );
 
         // res.status(updatePostData.status).json({ data: updatePostData });
-        res.json({ data: updatePostData });
+        return res.send({
+            success: updatePostData.success,
+            data: updatePostData.Posts,
+            msg: "게시물이 수정되었습니다.",
+        });
+        // res.json({ data: updatePostData });
     };
 
     //게시글 삭제
@@ -62,7 +77,12 @@ class PostsController {
         const { postId } = req.params;
 
         const deletPostData = await this.postService.deletePost(Number(postId));
-        res.json({ data: deletPostData });
+        // res.json({ data: deletPostData });
+        return res.send({
+            success: deletPostData.success,
+            data: deletPostData.Posts,
+            msg: "게시물 삭제에 성공했습니다.",
+        });
     };
 }
 
