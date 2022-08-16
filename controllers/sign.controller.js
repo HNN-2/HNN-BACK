@@ -110,6 +110,7 @@ class SignController {
 
                 return res.send({
                     success: loginData.success,
+                    token : loginData.token
                 });
             } else
                 return res.send({
