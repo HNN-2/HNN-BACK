@@ -1,4 +1,4 @@
-const { User ,Post} = require("../models");
+const { User, Post } = require("../models");
 
 class UserRepository {
     //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
@@ -65,23 +65,25 @@ class UserRepository {
             include: [
                 {
                     model: Post,
-                    
                 },
             ],
             where: { userId },
         });
-        
+
         return PostsOfLoginUserData.Posts;
     };
     //
-    updateRefreshToken = async (refreshToken,userId) => {
-        await User.update({
-            refreshToken
-        } , {
-            where : {userId}
-        })
-        return {success : true}
-    }
+    updateRefreshToken = async (refreshToken, userId) => {
+        await User.update(
+            {
+                refreshToken,
+            },
+            {
+                where: { userId },
+            }
+        );
+        return { success: true };
+    };
 }
 
 module.exports = UserRepository;

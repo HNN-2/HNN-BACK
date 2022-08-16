@@ -107,7 +107,7 @@ class SignController {
             const loginData = await this.signService.login(email, password);
             if (loginData.success) {
                 res.cookie("token", loginData.token);
-                
+
                 return res.send({
                     success: loginData.success,
                 });
@@ -202,12 +202,13 @@ class UserController {
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
         const { userId } = req.params;
-        const postOfLoginUserData = await this.userService.getPostOfLoginUser(userId)
+        const postOfLoginUserData = await this.userService.getPostOfLoginUser(
+            userId
+        );
         res.send({
-            success : true,
-            postOfLoginUserData
-
-        })
+            success: true,
+            postOfLoginUserData,
+        });
     };
 }
 module.exports = {
