@@ -106,7 +106,7 @@ class SignController {
             const { email, password } = req.body;
             const loginData = await this.signService.login(email, password);
             if (loginData.success) {
-                res.cookie("token", loginData.token);
+                res.header("token", loginData.token);
 
                 return res.send({
                     success: loginData.success,

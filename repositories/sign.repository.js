@@ -1,4 +1,4 @@
-const { User, Post } = require("../models");
+const { User, Post , Comment , Like} = require("../models");
 
 class UserRepository {
     //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
@@ -11,14 +11,14 @@ class UserRepository {
         });
         return createUserData;
     };
-    //유저 아이디로 해당 유저의 컬럼를 반환.
+    //유저 아이디로 해당 유저의 row 반환.
     returnUserStatus = async (userId) => {
         const userStatusData = await User.findOne({
             where: { userId },
         });
         return userStatusData;
     };
-    //email을 인자로 받아 중복된 이메일이 있다면 그 컬럼 반환
+    //email을 인자로 받아 중복된 이메일이 있다면 그 row 반환
     checkDupEmail = async (email) => {
         const dupEmailData = await User.findOne({
             where: { email },
@@ -26,7 +26,7 @@ class UserRepository {
 
         return dupEmailData;
     };
-    //nickname 인자로 받아 중복된 닉네임이 있다면 그 컬럼 반환
+    //nickname 인자로 받아 중복된 닉네임이 있다면 그 row 반환
     checkDupNickname = async (nickname) => {
         const dupNicknameData = await User.findOne({
             where: { nickname },
@@ -69,9 +69,24 @@ class UserRepository {
             ],
             where: { userId },
         });
+        
 
         return PostsOfLoginUserData.Posts;
     };
+    //postId 로 해당 포스트의 댓글 숫자 반환
+    returnCommentsNumOfLoginUserPosts = async(postId)=>{
+        const commentNum = await Comment.findAll({
+            where : {postId}
+        })
+        return commentNum.length;
+    }
+
+    returnLikeOfLoginUserPosts = async(postId) =>{ 
+    const LikeNum = await Like.findAll({
+        where : {postId}
+    })
+    return LikeNum.length;
+}
     //
     updateRefreshToken = async (refreshToken, userId) => {
         await User.update(
