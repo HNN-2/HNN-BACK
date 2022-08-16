@@ -18,7 +18,6 @@ class UserRepository {
         });
         return userStatusData;
     };
-
     //email을 인자로 받아 중복된 이메일이 있다면 그 컬럼 반환
     checkDupEmail = async (email) => {
         const dupEmailData = await User.findOne({
@@ -60,7 +59,7 @@ class UserRepository {
         );
         return updataUserProfileData;
     };
-
+    //userId 로 유저를 찾아 그 유저가 작성한 게시물을 반환
     returnPostOfLoginUser = async (userId) => {
         const PostsOfLoginUserData = await User.findOne({
             include: [
@@ -74,6 +73,15 @@ class UserRepository {
         
         return PostsOfLoginUserData.Posts;
     };
+    //
+    updateRefreshToken = async (refreshToken,userId) => {
+        await User.update({
+            refreshToken
+        } , {
+            where : {userId}
+        })
+        return {success : true}
+    }
 }
 
 module.exports = UserRepository;

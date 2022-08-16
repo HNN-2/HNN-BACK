@@ -106,12 +106,8 @@ class SignController {
             const { email, password } = req.body;
             const loginData = await this.signService.login(email, password);
             if (loginData.success) {
-                res.cookie("token", loginData.token, {
-                    maxAge: 1000 * 60 * 60,
-                });
-                res.cookie("refreshToken", "refresh", {
-                    maxAge: 1000 * 60 * 60 * 24 * 7, //1주일 유지
-                });
+                res.cookie("token", loginData.token);
+                
                 return res.send({
                     success: loginData.success,
                 });
