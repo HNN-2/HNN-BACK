@@ -20,7 +20,7 @@ class SignService {
                 success: false,
             };
         }
-        console.log(userData.password, this.changePasswordToHash(password))
+        
         if (userData.password === this.changePasswordToHash(password)) {
             const token = jwt.sign(
                 {
@@ -42,9 +42,9 @@ class SignService {
             );
             return {
                 token,
-                nickname : userData.nickname,
-                MBTI : userData.MBTI,
-                profilePicture : userData.profilePicture,
+                nickname: userData.nickname,
+                MBTI: userData.MBTI,
+                profilePicture: userData.profilePicture,
                 success: true,
             };
         } else
@@ -58,7 +58,7 @@ class SignService {
     // return msg: {"회원가입을 축하드립니다!" , success : true}
     createUser = async (email, nickname, password, MBTI) => {
         password = this.changePasswordToHash(password);
-        console.log(password);
+        
         const createUserData = await this.signRepository.createUser(
             email,
             nickname,
@@ -84,12 +84,12 @@ class SignService {
 
         if (checkDupEmailData) {
             return {
-                success: true,
+                success: false,
                 msg: "이미 존재하는 이메일입니다.",
             };
         } else
             return {
-                success: false,
+                success: true,
                 msg: "사용할 수 있는 이메일입니다.",
             };
     };
@@ -141,7 +141,7 @@ class SignService {
         });
         try {
             // 검사시작
-            console.log(nickname);
+            
             await schema.validateAsync({ nickname });
         } catch (e) {
             // 유효성 검사 에러
@@ -220,6 +220,14 @@ class SignService {
             .update(password)
             .digest("base64");
     };
+
+    deleteUser = async (userId) => {
+        await this.signRepository.deleteUser(userId);
+        return{
+            success : true,
+            msg: "서운해요.."
+        }
+    };
 }
 
 class UserService extends SignService {
@@ -258,24 +266,38 @@ class UserService extends SignService {
         const getPostOfLoginUserData =
             await this.signRepository.returnPostOfLoginUser(userId);
         // console.log(getPostOfLoginUserData)
-        const PostOfMypage = getPostOfLoginUserData.map(async(post, idx) => {
-            
-             return {
-            title : post.title,
-            content : post.content,
-            createdAt : post.createdAt,
-            info: {
-                songTitle : post.songTitle,
-                singer : post.singer
-            },
-            commentNum :  this.signRepository.returnCommentsNumOfLoginUserPosts(post.postId),
-            like :  this.signRepository.returnLikeOfLoginUserPosts(post.postId),
+        const commentNum = await Promise.all(
+            getPostOfLoginUserData.map(
+                async (post) =>
+                    await this.signRepository.returnCommentsNumOfLoginUserPosts(
+                        post.postId
+                    )
+            )
+        );
+        const likeNum = await Promise.all(
+            getPostOfLoginUserData.map(
+                async (post) =>
+                    await this.signRepository.returnLikeOfLoginUserPosts(
+                        post.postId
+                    )
+            )
+        );
 
-            }
-
+        const PostOfMypage = getPostOfLoginUserData.map((post, idx) => {
+            return {
+                title: post.title,
+                content: post.content,
+                createdAt: post.createdAt,
+                info: {
+                    songTitle: post.songTitle,
+                    singer: post.singer,
+                },
+                commentNum: commentNum[idx],
+                like: likeNum[idx],
+            };          
         });
-        console.log(PostOfMypage)
-        return { success: true };
+
+        return { success: true, data: PostOfMypage };
     };
 }
 module.exports = {

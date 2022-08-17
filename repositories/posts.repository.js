@@ -45,8 +45,10 @@ class PostRepository {
                 "songTitle",
                 "singer",
             ],
+            
             // raw: true,
         });
+        
 
         return detailPostUser;
     };
@@ -64,6 +66,7 @@ class PostRepository {
             attributes: ["content", "userId", "createdAt"],
             raw: true,
         });
+        
 
         return detailCommentUser;
     };
