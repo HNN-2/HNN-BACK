@@ -45,6 +45,7 @@ class SignService {
                 nickname: userData.nickname,
                 MBTI: userData.MBTI,
                 profilePicture: userData.profilePicture,
+                userId : userData.userId,
                 success: true,
             };
         } else
