@@ -205,6 +205,7 @@ class SignService {
                 success: false,
             };
         }
+        console.log(email, password)
         if (password.search(email) > -1) {
             return {
                 msg: "이메일에 비밀번호가 포함됩니다.",
@@ -235,6 +236,9 @@ class UserService {
     signRepository = new SignRepository();
     signService = new SignService()
     
+    getUserStatus = async (userId) => {
+        return await this.signRepository.returnUserStatus(userId)
+    }
     //userId로 받아온 유저의 password 가 password와 같다면 true
     //다르면 false
     checkPassword = async (userId, password) => {
@@ -255,7 +259,7 @@ class UserService {
         profilePicture
     ) => {
         password = this.signService.changePasswordToHash(password);
-        updateUserProfileData = await this.signRepository.updateUserProfile(
+         await this.signRepository.updateUserProfile(
             userId,
             password,
             nickname,
@@ -269,7 +273,6 @@ class UserService {
         const getPostOfLoginUserData =
 
             await this.signRepository.returnPostOfLoginUser(userId);
-        // console.log(getPostOfLoginUserData)
         const commentNum = await Promise.all(
             getPostOfLoginUserData.map(
                 async (post) =>

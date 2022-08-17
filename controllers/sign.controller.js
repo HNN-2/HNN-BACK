@@ -106,7 +106,8 @@ class SignController {
             const { email, password } = req.body;
             const loginData = await this.signService.login(email, password);
             if (loginData.success) {
-                res.header("token", loginData.token);
+                res.header({authorization: `Bearer ${loginData.token}`})
+                   
 
                 return res.send({
                     success: loginData.success,
@@ -140,6 +141,7 @@ class SignController {
 
 class UserController {
     userService = new UserService();
+    signService = new SignService();
     //아직 테스트 해봐야 함.
     updateUserProfile = async (req, res, next) => {
         const { userId } = req.params;
@@ -151,12 +153,17 @@ class UserController {
             newMBTI,
             newProfilePicture
         } = req.body;
+
+        const userStatus = await this.userService.getUserStatus(userId)
+        
         // const newProfilePicture = req.file; // 사진 파일
         //입력한 비밀번호가 다른 경우
+        
         const checkDupPasswordData = await this.userService.checkPassword(
             userId,
             password
         );
+        console.log(checkDupPasswordData)
         if (
             !checkDupPasswordData.success ||
             newPassword !== confirmNewPassword
@@ -166,6 +173,7 @@ class UserController {
                 success: false,
             });
         }
+        
         //입력한 비밀번호가 현재의 비밀번호와 같은 경우
         const checkDupNewPasswordData = await this.userService.checkPassword(
             userId,
@@ -177,18 +185,22 @@ class UserController {
                 success: false,
             });
         }
+       
         //입력한 비밀번호의 유효성 검사
         const checkEffectivenessNewPassword =
-            await this.signService.checkPasswordEffectiveness(newPassword);
+            await this.signService.checkPasswordEffectiveness(newPassword,userStatus.email);
+            console.log(checkEffectivenessNewPassword)
         if (!checkEffectivenessNewPassword.success) {
             return res.send({
-                success: checkDupNewPasswordData.success,
-                msg: checkDupNewPasswordData.msg,
+                success: checkEffectivenessNewPassword.success,
+                msg: checkEffectivenessNewPassword.msg,
             });
         }
+        
         //닉네임의 유효성, 중복 확인
         const checkNicknameData =
             await this.signService.checkNicknameEffectiveness(newNickname);
+        
         if (!checkNicknameData.success) {
             return res.send({
                 success: checkNicknameData.success,
@@ -204,13 +216,15 @@ class UserController {
             newMBTI,
             
         );
+        
         if (updateUserProfileData.success) {
             return res.send({
                 success: updateUserProfileData.success,
+                msg : "유저정보가 수정되었습니다."
             });
         }
         return res.send({
-            success: updateUserProfileData.success,
+            success: true,
         });
     };
 
