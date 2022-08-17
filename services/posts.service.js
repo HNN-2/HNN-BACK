@@ -7,8 +7,6 @@ class PostService {
     findAllPost = async (userId) => {
         const allPost = await this.postRepository.findAllPost(userId);
 
-
-
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
             const like = allPost.like;
