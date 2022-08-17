@@ -55,7 +55,6 @@ class PostRepository {
                 "songTitle",
                 "singer",
             ],
-
             // raw: true,
         });
 
