@@ -6,6 +6,7 @@ class PostService {
     //게시글 전체 보기
     findAllPost = async () => {
         const allPost = await this.postRepository.findAllPost();
+
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
             const like = allPost.like;
