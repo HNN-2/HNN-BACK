@@ -41,10 +41,18 @@ class PostService {
     getPost = async (postId) => {
         const getPostData = await this.postRepository.findOnePost(postId);
         const getCommentData = await this.postRepository.findComments(postId);
-        // console.log(getPostData.dataValues.Likes);
-
+        console.log(getCommentData[0])
+        const comment = getCommentData.map((com) => {
+            return {
+                MBTI : com.User.MBTI,
+                nickname : com.User.nickname,
+                profilePicture : com.User.profilePicture
+            }
+        })
+        console.log(comment)
+        
         const postLikeData = getPostData.dataValues.Likes;
-        console.log(postLikeData.length);
+        
         delete getPostData.dataValues.Likes;
 
         return {

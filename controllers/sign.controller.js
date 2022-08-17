@@ -110,7 +110,7 @@ class SignController {
 
                 return res.send({
                     success: loginData.success,
-                    token : loginData.token
+                    token: loginData.token,
                 });
             } else
                 return res.send({
@@ -126,6 +126,11 @@ class SignController {
     logout = async (req, res, next) => {
         await res.clearCookie("token");
         res.send({ success: true });
+    };
+
+    deleteUser = async (req, res, next) => {
+        const { user } = req.params;
+        const deleteUserData =this.signService
     };
 }
 
@@ -206,9 +211,10 @@ class UserController {
         const postOfLoginUserData = await this.userService.getPostOfLoginUser(
             userId
         );
+        
         res.send({
             success: true,
-            postOfLoginUserData,
+            data: postOfLoginUserData.data,
         });
     };
 }

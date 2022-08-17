@@ -1,4 +1,4 @@
-const { User, Post , Comment , Like} = require("../models");
+const { User, Post, Comment, Like } = require("../models");
 
 class UserRepository {
     //새로운 유저테이블 생성, 생성한 유저의 정보 반환.
@@ -69,25 +69,24 @@ class UserRepository {
             ],
             where: { userId },
         });
-        
 
         return PostsOfLoginUserData.Posts;
     };
     //postId 로 해당 포스트의 댓글 숫자 반환
-    returnCommentsNumOfLoginUserPosts = async(postId)=>{
+    returnCommentsNumOfLoginUserPosts = async (postId) => {
         const commentNum = await Comment.findAll({
-            where : {postId}
-        })
+            where: { postId },
+        });
         return commentNum.length;
-    }
-
-    returnLikeOfLoginUserPosts = async(postId) =>{ 
-    const LikeNum = await Like.findAll({
-        where : {postId}
-    })
-    return LikeNum.length;
-}
-    //
+    };
+    //postId를 넣으면 그 포스트의 좋아요 숫자를 반환
+    returnLikeOfLoginUserPosts = async (postId) => {
+        const LikeNum = await Like.findAll({
+            where: { postId },
+        });
+        return LikeNum.length;
+    };
+    
     updateRefreshToken = async (refreshToken, userId) => {
         await User.update(
             {
@@ -97,6 +96,13 @@ class UserRepository {
                 where: { userId },
             }
         );
+        return { success: true };
+    };
+    //userId로 해당 유저를 삭제.
+    deleteUser = async (userId) => {
+        await User.delete({
+            where: { userId },
+        });
         return { success: true };
     };
 }
