@@ -231,14 +231,19 @@ class SignService {
     };
 }
 
-class UserService extends SignService {
+class UserService {
     signRepository = new SignRepository();
-
+    signService = new SignService()
+    
+    getUserStatus = async (userId) => {
+        return await this.signRepository.returnUserStatus(userId)
+    }
     //userId로 받아온 유저의 password 가 password와 같다면 true
     //다르면 false
     checkPassword = async (userId, password) => {
-        password = super.changePasswordToHash(password);
-        const userStatus = await super.returnUserStatus(userId);
+        
+        password = this.signService.changePasswordToHash(password);
+        const userStatus = await this.signRepository.returnUserStatus(userId);
         if (password === userStatus.password) {
             return { success: true };
         } else return { success: false };
@@ -252,8 +257,8 @@ class UserService extends SignService {
         MBTI,
         profilePicture
     ) => {
-        password = super.changePasswordToHash(password);
-        updateUserProfileData = await this.signRepository.updateUserProfile(
+        password = this.signService.changePasswordToHash(password);
+         await this.signRepository.updateUserProfile(
             userId,
             password,
             nickname,
@@ -267,7 +272,6 @@ class UserService extends SignService {
         const getPostOfLoginUserData =
 
             await this.signRepository.returnPostOfLoginUser(userId);
-        // console.log(getPostOfLoginUserData)
         const commentNum = await Promise.all(
             getPostOfLoginUserData.map(
                 async (post) =>
@@ -303,6 +307,11 @@ class UserService extends SignService {
 
         return { success: true, data: PostOfMypage };
     };
+
+    updateProfilePicture = async (profilePicture) => {
+        
+
+    }
 }
 module.exports = {
     SignService,

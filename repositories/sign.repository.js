@@ -105,6 +105,12 @@ class UserRepository {
         });
         return { success: true };
     };
+    returnUserLikeOrNot = async (userId, postId) => {
+        const data = await Like.findOne({
+            where : {userId,postId}
+        })
+        return data
+    }
 }
 
 module.exports = UserRepository;

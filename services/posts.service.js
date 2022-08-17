@@ -7,7 +7,7 @@ class PostService {
     findAllPost = async (userId) => {
         const allPost = await this.postRepository.findAllPost(userId);
 
-        // console.log(allPost.Locals);
+
 
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
