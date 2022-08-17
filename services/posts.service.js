@@ -12,6 +12,7 @@ class PostService {
 
             // for (let i = 0; i <Locals.length; i++) {
             return {
+                postId: post.postId,
                 title: post.title,
                 content: post.content,
                 nickname: allPost.Locals[i].dataValues.nickname,

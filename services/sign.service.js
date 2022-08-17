@@ -264,6 +264,7 @@ class UserService extends SignService {
 
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
+
             await this.signRepository.returnPostOfLoginUser(userId);
         // console.log(getPostOfLoginUserData)
         const commentNum = await Promise.all(
@@ -283,6 +284,7 @@ class UserService extends SignService {
             )
         );
 
+
         const PostOfMypage = getPostOfLoginUserData.map((post, idx) => {
             return {
                 title: post.title,
@@ -295,6 +297,7 @@ class UserService extends SignService {
                 commentNum: commentNum[idx],
                 like: likeNum[idx],
             };          
+
         });
 
         return { success: true, data: PostOfMypage };

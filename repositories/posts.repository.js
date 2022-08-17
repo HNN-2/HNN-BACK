@@ -12,11 +12,12 @@ class PostRepository {
             const locals = await User.findOne({
                 where: { userId: posts[i].userId },
             }); //locals에는 posts.userId로 찾은 user 데이터가 담겨있다.
+
             const temp = await Like.findAll({
                 where: { postId: posts[i].postId },
             });
+
             like.push(temp.length);
-            console.log(temp.length);
             Locals.push(locals);
         }
         return { posts, Locals, like };
@@ -37,6 +38,7 @@ class PostRepository {
                 },
             ],
             attributes: [
+                "postId",
                 "title",
                 "userId",
                 "createdAt",
@@ -63,7 +65,7 @@ class PostRepository {
                     attributes: ["MBTI", "nickname", "profilePicture"],
                 },
             ],
-            attributes: ["content", "userId", "createdAt"],
+            attributes: ["commentId", "content", "userId", "createdAt"],
             raw: true,
         });
         
