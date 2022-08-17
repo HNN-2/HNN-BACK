@@ -240,7 +240,7 @@ class UserService {
     checkPassword = async (userId, password) => {
         
         password = this.signService.changePasswordToHash(password);
-        const userStatus = await this.signService.returnUserStatus(userId);
+        const userStatus = await this.signRepository.returnUserStatus(userId);
         if (password === userStatus.password) {
             return { success: true };
         } else return { success: false };
