@@ -111,6 +111,9 @@ class SignController {
                 return res.send({
                     success: loginData.success,
                     token: loginData.token,
+                    MBTI : loginData.MBTI,
+                    ProfilePicture : loginData.profilePicture,
+                    nickname : loginData.nickname
                 });
             } else
                 return res.send({
