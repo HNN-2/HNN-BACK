@@ -7,7 +7,7 @@ const postsController = new PostsController();
 
 // 게시물 조회, 로그인 필요 없음
 //http://localhost:8000/post/allpost
-router.get("/", postsController.getAllPosts);
+router.get("/",postsController.getAllPosts);
 
 // 게시물 상세보기, 로그인 필요 없음
 //http://localhost:8000/post/postId

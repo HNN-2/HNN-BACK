@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth-middleware");
-
+const updateProfileMiddleware = require("../middlewares/uploadImage-middleware")
 const { SignController } = require("../controllers/sign.controller");
 const signController = new SignController();
 
@@ -28,10 +28,10 @@ router.post("/checkNickname", signController.checkDupNickname);
 router.post("/out", authMiddleware, signController.logout);
 
 //유저 정보 수정
-router.patch("/user/:userId", authMiddleware, userController.updateUserProfile);
+router.patch("/user/:userId",  userController.updateUserProfile);
 
 //마이페이지 자신이 작성한 게시물 데이터
-router.get("/user/:userId", authMiddleware, userController.postOfLoginUser);
+router.get("/user/:userId",  userController.postOfLoginUser);
 
 //회원 탈퇴
 router.delete("/sign/user/:userId")
