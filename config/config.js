@@ -8,6 +8,14 @@ const development = {
     database: env.MYSQL_DATABASE,
     host: env.MYSQL_HOST,
     dialect: "mysql",
+    timezone: "+09:00",
+    dialectOptions: {
+        dateStrings: true,
+        typeCast: true,
+    },
+    define: {
+        timestamps: true,
+    },
     //port: env.MYSQL_PORT
 };
 
