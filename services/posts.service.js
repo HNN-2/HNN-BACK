@@ -5,7 +5,9 @@ class PostService {
 
     //게시글 전체 보기
     findAllPost = async (userId) => {
-        const allPost = await this.postRepository.findAllPost();
+        const allPost = await this.postRepository.findAllPost(userId);
+
+        // console.log(allPost.Locals);
 
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
@@ -16,9 +18,12 @@ class PostService {
                 postId: post.postId,
                 title: post.title,
                 content: post.content,
-                nickname: allPost.Locals[i].dataValues.nickname,
-                profilePicture: allPost.Locals[i].dataValues.profilePicture,
-                MBTI: allPost.Locals[i].dataValues.MBTI,
+                // nickname: allPost.Locals[i].dataValues.nickname,
+                nickname: post.nickname,
+                // profilePicture: allPost.Locals[i].dataValues.profilePicture,
+                profilePicture: post.profilePicture,
+                // MBTI: allPost.Locals[i].dataValues.MBTI,
+                MBTI: post.MBTI,
                 createdAt: post.createdAt,
                 like: allPost.like[i],
                 likepost: allPost.arr[i],

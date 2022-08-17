@@ -16,23 +16,27 @@ class PostRepository {
         for (let i = 0; i < posts.length; i++) {
             const locals = await User.findOne({
                 where: { userId: posts[i].userId },
+                raw: true,
             }); //해당 게시물의 유저 정보 출력
 
             const temp = await Like.findAll({
                 where: { postId: posts[i].postId },
+                raw: true,
             }); //해당 게시물의 좋아요 개수 출력
 
             const commentNum = await Comment.findAll({
                 where: { postId: posts[i].postId },
+                raw: true,
             }); //해당 게시물의 댓글 개수 출력
 
             //user가 좋아요한 게시글 보여주기
             const FindUserLikeId = await Like.findOne({
-                where: { userId: 2, postId: posts[i].postId },
+                where: { userId: 2, postId: posts[i].postId }, //userId, postId 조합?이 Like에 있는지
                 raw: true,
             });
 
             if (FindUserLikeId) {
+                //Like에 있는 조합이 로그인된 userid와 post 테이블에 있다면 true,
                 arr.push(true);
             } else {
                 arr.push(false);
