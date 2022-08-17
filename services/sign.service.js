@@ -205,7 +205,6 @@ class SignService {
                 success: false,
             };
         }
-        console.log(email, password)
         if (password.search(email) > -1) {
             return {
                 msg: "이메일에 비밀번호가 포함됩니다.",

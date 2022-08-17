@@ -163,7 +163,6 @@ class UserController {
             userId,
             password
         );
-        console.log(checkDupPasswordData)
         if (
             !checkDupPasswordData.success ||
             newPassword !== confirmNewPassword
@@ -189,7 +188,6 @@ class UserController {
         //입력한 비밀번호의 유효성 검사
         const checkEffectivenessNewPassword =
             await this.signService.checkPasswordEffectiveness(newPassword,userStatus.email);
-            console.log(checkEffectivenessNewPassword)
         if (!checkEffectivenessNewPassword.success) {
             return res.send({
                 success: checkEffectivenessNewPassword.success,
