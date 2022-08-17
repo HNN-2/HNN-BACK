@@ -47,24 +47,12 @@ class PostService {
         const postLikeData = getPostData.dataValues.Likes;
         const commentUserDate = getPostData.dataValues.Users;
 
-        console.log(getPostData.dataValues.User.dataValues.MBTI);
-
         delete getPostData.dataValues.Likes; //배열 지우는 방법
 
         return {
             poster: getPostData,
             like: postLikeData.length,
             commenter: getCommentData,
-            // MBTI: getPostData.dataValues.User.dataValues.MBTI,
-
-            // commenter: {
-            //     commentId: post.commentId,
-            //     userId: post["User.MBTI"],
-            //     nickname: post["User.nickname"],
-            //     content: post.content,
-            //     profilePicture: post["User.profilePicture"],
-            //     MBTI: post["User.MBTI"],
-            //     createdAt: post.createdAt,
         };
     };
     //게시글 생성
