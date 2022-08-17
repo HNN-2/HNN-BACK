@@ -149,8 +149,9 @@ class UserController {
             confirmNewPassword,
             newNickname,
             newMBTI,
-            newProfilePicture,
+            newProfilePicture
         } = req.body;
+        // const newProfilePicture = req.file; // 사진 파일
         //입력한 비밀번호가 다른 경우
         const checkDupPasswordData = await this.userService.checkPassword(
             userId,
@@ -194,13 +195,14 @@ class UserController {
                 msg: checkNicknameData.msg,
             });
         }
+        
         //위의 모든 조건들을 만족한다면 회원정보 업데이트
         const updateUserProfileData = await this.userService.updateUserProfile(
             userId,
             newPassword,
             newNickname,
             newMBTI,
-            newProfilePicture
+            
         );
         if (updateUserProfileData.success) {
             return res.send({
@@ -212,6 +214,7 @@ class UserController {
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
         const { userId } = req.params;
+        
         const postOfLoginUserData = await this.userService.getPostOfLoginUser(
             userId
         );
