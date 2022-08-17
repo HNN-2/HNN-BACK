@@ -209,6 +209,9 @@ class UserController {
                 success: updateUserProfileData.success,
             });
         }
+        return res.send({
+            success: updateUserProfileData.success,
+        });
     };
 
     //내가 쓴 글 보기
