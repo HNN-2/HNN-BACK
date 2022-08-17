@@ -6,7 +6,6 @@ class PostService {
     //게시글 전체 보기
     findAllPost = async () => {
         const allPost = await this.postRepository.findAllPost();
-
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
             const like = allPost.like;
@@ -22,7 +21,7 @@ class PostService {
                 MBTI: allPost.Locals[i].dataValues.MBTI,
                 createdAt: post.createdAt,
                 like: allPost.like[i],
-                //commentNum:
+                commentNum: allPost.CommentNum[i],
                 info: {
                     songTitle: post.songTitle,
                     singer: post.singer,
@@ -46,6 +45,9 @@ class PostService {
         const getPostData = await this.postRepository.findOnePost(postId);
         const getCommentData = await this.postRepository.findComments(postId);
         const postLikeData = getPostData.dataValues.Likes;
+        const commentUserDate = getPostData.dataValues.Users;
+
+        console.log(getPostData.dataValues.User.dataValues.MBTI);
 
         delete getPostData.dataValues.Likes; //배열 지우는 방법
 
@@ -53,9 +55,18 @@ class PostService {
             poster: getPostData,
             like: postLikeData.length,
             commenter: getCommentData,
+            // MBTI: getPostData.dataValues.User.dataValues.MBTI,
+
+            // commenter: {
+            //     commentId: post.commentId,
+            //     userId: post["User.MBTI"],
+            //     nickname: post["User.nickname"],
+            //     content: post.content,
+            //     profilePicture: post["User.profilePicture"],
+            //     MBTI: post["User.MBTI"],
+            //     createdAt: post.createdAt,
         };
     };
-
     //게시글 생성
     createPost = async (
         title,

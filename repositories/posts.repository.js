@@ -4,10 +4,12 @@ const SignRepository = require("../repositories/sign.repository");
 
 class PostRepository {
     //게시글 전체 보기
+    //17일 오전에 댓글 숫자 나오게 수정 완료
     findAllPost = async () => {
         const posts = await Post.findAll();
         const Locals = [];
         const like = [];
+        const CommentNum = [];
 
         for (let i = 0; i < posts.length; i++) {
             const locals = await User.findOne({
@@ -17,11 +19,15 @@ class PostRepository {
             const temp = await Like.findAll({
                 where: { postId: posts[i].postId },
             });
+            const commentNum = await Comment.findAll({
+                where: { postId: posts[i].postId },
+            });
 
             like.push(temp.length);
             Locals.push(locals);
+            CommentNum.push(commentNum.length);
         }
-        return { posts, Locals, like };
+        return { posts, Locals, like, CommentNum };
     };
 
     //댓글 없는 게시글 상세 조회
@@ -68,7 +74,7 @@ class PostRepository {
                 },
             ],
             attributes: ["commentId", "content", "userId", "createdAt"],
-            raw: true,
+            // raw: true,
         });
 
         return detailCommentUser;
