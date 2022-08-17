@@ -3,6 +3,7 @@ const PostService = require("../services/posts.service");
 const SignRepository = require("../repositories/sign.repository");
 
 class PostRepository {
+    //게시글 전체 보기
     findAllPost = async () => {
         const posts = await Post.findAll();
         const Locals = [];
@@ -23,8 +24,9 @@ class PostRepository {
         return { posts, Locals, like };
     };
 
+    //댓글 없는 게시글 상세 조회
+    //Post 와 User, Like 테이블 병합
     findOnePost = async (postId) => {
-        //게시글 상세 조회 (댓글 없을때)
         const detailPostUser = await Post.findOne({
             where: { postId },
             include: [
@@ -47,15 +49,15 @@ class PostRepository {
                 "songTitle",
                 "singer",
             ],
-            
+
             // raw: true,
         });
-        
 
         return detailPostUser;
     };
 
-    //게시글의 댓글 찾기
+    //댓글 상세 조회
+    // Comment 와 User 테이블 병합하여
     findComments = async (postId) => {
         const detailCommentUser = await Comment.findAll({
             where: { postId },
@@ -68,11 +70,11 @@ class PostRepository {
             attributes: ["commentId", "content", "userId", "createdAt"],
             raw: true,
         });
-        
 
         return detailCommentUser;
     };
 
+    //게시글 생성
     createPost = async (
         title,
         content,
@@ -82,8 +84,6 @@ class PostRepository {
         userId,
         MBTI
     ) => {
-        // createPost = async (title, content, imageUrl) => {
-        // ORM인 Sequelize에서 Posts 모델의 create 메소드를 사용해 데이터를 요청합니다.
         const createPostData = await Post.create({
             title,
             content,
@@ -96,6 +96,7 @@ class PostRepository {
         return createPostData;
     };
 
+    //게시글 수정
     updatePost = async (postId, title, content, imageUrl) => {
         const updatePostData = await Post.update(
             { title, content, imageUrl },
@@ -107,6 +108,7 @@ class PostRepository {
         return updatePostData;
     };
 
+    //게시글 삭제
     deletePost = async (postId) => {
         await Post.destroy({
             where: { postId },

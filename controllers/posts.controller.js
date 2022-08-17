@@ -15,7 +15,7 @@ class PostsController {
         const { postId } = req.params;
 
         const postData = await this.postService.getPost(Number(postId));
-        
+
         res.json({
             data: postData,
         });
