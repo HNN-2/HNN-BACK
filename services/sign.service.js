@@ -239,8 +239,8 @@ class UserService {
     //다르면 false
     checkPassword = async (userId, password) => {
         
-        password = signService.changePasswordToHash(password);
-        const userStatus = await signService.returnUserStatus(userId);
+        password = this.signService.changePasswordToHash(password);
+        const userStatus = await this.signService.returnUserStatus(userId);
         if (password === userStatus.password) {
             return { success: true };
         } else return { success: false };
@@ -254,7 +254,7 @@ class UserService {
         MBTI,
         profilePicture
     ) => {
-        password = signService.changePasswordToHash(password);
+        password = this.signService.changePasswordToHash(password);
         updateUserProfileData = await this.signRepository.updateUserProfile(
             userId,
             password,
