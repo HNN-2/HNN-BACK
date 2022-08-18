@@ -39,13 +39,13 @@ class PostsController {
         );
         res.json({ data: createPostData.msg });
     };
-    //게시글 수정
+
+    //게시글 수정 222
     updatePost = async (req, res, next) => {
         const { postId } = req.params;
-        const { title, content, imageUrl, songTitle, singer } = req.body;
+        const { content, imageUrl, songTitle, singer } = req.body;
         const updatePostData = await this.postService.updatePost(
             postId,
-            title,
             content,
             imageUrl,
             songTitle,
