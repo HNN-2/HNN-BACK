@@ -94,18 +94,6 @@ class PostService {
 
     //게시글 수정
     updatePost = async (postId, content, imageUrl, songTitle, singer) => {
-        // if (
-        //     !postId ||
-        //     title ||
-        //     content ||
-        //     imageUrl ||
-        //     songTitle ||
-        //     singer == undefined
-        // ) {
-        //     return {
-        //         success: false,
-        //     };
-        // } else {
         await this.postRepository.updatePost(
             postId,
             content,
