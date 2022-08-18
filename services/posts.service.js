@@ -106,41 +106,29 @@ class PostService {
         songTitle,
         singer
     ) => {
-        if (
-            !postId ||
-            title ||
-            content ||
-            imageUrl ||
-            songTitle ||
-            singer == undefined
-        ) {
-            return {
-                success: false,
-                msg,
-            };
-        } else {
-            await this.postRepository.updatePost(
-                postId,
-                title,
-                content,
-                imageUrl
-            );
-            return {
-                success: true,
-                msg,
-                // msg: "게시물이 수정되었습니다.",
-            };
-        }
+        // if (
+        //     !postId ||
+        //     title ||
+        //     content ||
+        //     imageUrl ||
+        //     songTitle ||
+        //     singer == undefined
+        // ) {
+        //     return {
+        //         success: false,
+        //     };
+        // } else {
+        await this.postRepository.updatePost(postId, title, content, imageUrl);
+        return true;
     };
 
     //게시글 삭제
     deletePost = async (postId) => {
-        if (!postId) {
-            return { success: false, msg };
-        }
+        // if (!postId) {
+        //     return { success: false, msg };
+        // }
         await this.postRepository.deletePost(postId);
-        return { success: true, msg };
+        return true;
     };
 }
-
 module.exports = PostService;
