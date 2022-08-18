@@ -217,8 +217,8 @@ class UserController {
                     msg: checkNicknameData.msg,
                 });
             }
-
-            if (newMBTI.length < 4 && newMBTI.length > 0) {
+            
+            if (newMBTI &&newMBTI.length < 4 && newMBTI.length > 0) {
                 return res.send({
                     success: false,
                     msg: "MBTI를 확인하세요.",
@@ -272,7 +272,8 @@ class UserController {
             const updateUserProfilePictureData =await this.userService.updateUserProfilePicture(userId,location);
             return res.send({
                 success :updateUserProfilePictureData.success,
-                msg : updateUserProfilePictureData.msg
+                msg : updateUserProfilePictureData.msg,
+                profilePicture : location
             })
         } catch (err) {
             next(err)
