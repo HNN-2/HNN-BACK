@@ -91,7 +91,15 @@ class PostService {
             msg: "게시물이 생성되었습니다!",
         };
     };
-
+    //이미지 수정
+    updateImage = async (postId,imageLocation) => {
+        console.log(postId, imageLocation)
+        await this.postRepository.updatePostImage(postId, imageLocation)
+        return {
+            msg : "이미지 등록",
+            success : "true"
+        }
+    }
     //게시글 수정
     updatePost = async (postId, content, imageUrl, songTitle, singer) => {
         await this.postRepository.updatePost(
