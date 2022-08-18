@@ -218,7 +218,7 @@ class UserController {
                 });
             }
             
-            if (newMBTI &&newMBTI.length < 4 && newMBTI.length > 0) {
+            if (!newMBTI ||newMBTI.length < 4 && newMBTI.length > 0) {
                 return res.send({
                     success: false,
                     msg: "MBTI를 확인하세요.",
