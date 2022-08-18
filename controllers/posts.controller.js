@@ -4,9 +4,11 @@ const PostService = require("../services/posts.service");
 class PostsController {
     postService = new PostService();
 
-    //전체 게시물 조회, 상세페이지
+    //전체 게시물 조회
     getAllPosts = async (req, res, next) => {
-        const postsData = await this.postService.findAllPost();
+        const { userId } = res.locals;
+
+        const postsData = await this.postService.findAllPost(userId);
         res.json({ data: postsData.Posts });
     };
 
@@ -14,13 +16,16 @@ class PostsController {
     getOnePost = async (req, res, next) => {
         try {
             const { postId } = req.params;
-            const postData = await this.postService.getPost(Number(postId));
+            const postData = await this.postService.getPost(postId);
 
             res.json({
                 data: postData,
             });
-        } catch (error) {
-            next(err);
+        } catch (err) {
+            res.json({
+                msg: "해당 게시글이 없습니다",
+            });
+            // next(err);
         }
     };
 
@@ -41,7 +46,9 @@ class PostsController {
             );
             res.json({ data: createPostData.msg });
         } catch (err) {
-            next(err);
+            res.json({
+                msg: "빈칸을 다 입력해주세요",
+            });
         }
     };
 
@@ -49,19 +56,23 @@ class PostsController {
     updatePost = async (req, res, next) => {
         try {
             const { postId } = req.params;
-            const { title, content, imageUrl } = req.body;
+            const { title, content, imageUrl, songTitle, singer } = req.body;
 
             const updatePostData = await this.postService.updatePost(
-                Number(postId),
+                postId,
                 title,
                 content,
-                imageUrl
+                imageUrl,
+                songTitle,
+                singer
             );
 
             // res.status(updatePostData.status).json({ data: updatePostData });
             res.json({ data: updatePostData });
         } catch (err) {
-            next(err);
+            res.json({
+                msg: "게시글이 존재하지 않거나 수정할 내용이 없습니다",
+            });
         }
     };
 
@@ -69,15 +80,16 @@ class PostsController {
     deletePost = async (req, res, next) => {
         try {
             const { postId } = req.params;
-
-            const deletPostData = await this.postService.deletePost(
-                Number(postId)
-            );
-            res.json({ data: deletPostData });
+            const deletPostData = await this.postService.deletePost(postId);
+            res.json({
+                data: deletPostData,
+                msg: "게시물 삭제에 성공했습니다.",
+            });
         } catch (err) {
-            next(err);
+            res.json({
+                msg: "게시글이 존재하지 않습니다.",
+            });
         }
     };
 }
-
 module.exports = PostsController;

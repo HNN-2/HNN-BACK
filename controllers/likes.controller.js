@@ -7,7 +7,7 @@ class LikesController {
         const { userId } = res.locals;
         try {
             const findLikeId = await this.likeService.findLikeId(userId);
-            res.json({ success: true, data: findLikeId });
+            res.json({ data: findLikeId });
         } catch (err) {
             next(err);
         }

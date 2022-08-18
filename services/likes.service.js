@@ -6,7 +6,15 @@ class LikesService {
     //내 좋아요 확인
     findLikeId = async (userId) => {
         const findById = await this.likeRepository.findLikeId(userId);
-        return { findById };
+
+        if (userId == findById[0].dataValues.userId) {
+            return {
+                success: true,
+                Postdata: findById[0].dataValues.postId,
+            };
+        } else {
+            return { success: false, Postdata: findById };
+        }
     };
 
     //좋아요 등록 및 취소
@@ -16,7 +24,7 @@ class LikesService {
                 success: false,
                 msg: "해당되는 포스트가 없습니다.",
             };
-        }
+        } //게시글 없을 때
 
         const likeUpDown = await this.likeRepository.findLike(postId, userId);
         if (likeUpDown) {
