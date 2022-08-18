@@ -8,7 +8,7 @@ const signController = new SignController();
 const { UserController } = require("../controllers/sign.controller");
 const userController = new UserController();
 
-const upload = require("../middlewares/uploadImage-middleware")
+const upload = require("../middlewares/postImageUploadMiddleware")
 
  
 
@@ -36,6 +36,7 @@ router.post("/out", authMiddleware, signController.logout);
 
 router.patch("/user/:userId",authMiddleware , userController.updateUserProfile);
 
+//유저 사진 변경
 router.patch("/user/profilePic/:userId",upload.single('userfile'), userController.updateUserProfilePicture)
 //마이페이지 자신이 작성한 게시물 데이터
 router.get("/user/:userId", userController.postOfLoginUser);
