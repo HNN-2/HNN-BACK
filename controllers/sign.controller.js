@@ -266,7 +266,12 @@ class UserController {
     updateUserProfilePicture = async (req, res, next) => {
         try {
             const  profilePicture  = req.file;
-            
+            if(!profilePicture){
+                return res.send({
+                    success : false,
+                    msg : "이미지를 등록 해주세요."
+                })
+            }
             const {userId} = req.params;
             const location = profilePicture.location;
             const updateUserProfilePictureData =await this.userService.updateUserProfilePicture(userId,location);
