@@ -43,7 +43,6 @@ class PostsController {
     updatePost = async (req, res, next) => {
         const { postId } = req.params;
         const { title, content, imageUrl, songTitle, singer } = req.body;
-
         const updatePostData = await this.postService.updatePost(
             postId,
             title,
