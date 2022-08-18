@@ -9,7 +9,8 @@ class PostsController {
         const { userId } = res.locals;
 
         const postsData = await this.postService.findAllPost(userId);
-        res.json({ data: postsData.Posts });
+        res.json({ data: postsData });
+        // res.json({ data: postsData.Posts });
     };
 
     //상세 게시물 조회

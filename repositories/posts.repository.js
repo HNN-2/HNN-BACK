@@ -1,7 +1,7 @@
 const { Like, Post, User, Comment } = require("../models");
 const PostService = require("../services/posts.service");
 const SignRepository = require("../repositories/sign.repository");
-const { connect } = require("mongoose");
+// const { connect } = require("mongoose");
 
 class PostRepository {
     //게시글 전체 보기
@@ -11,7 +11,8 @@ class PostRepository {
         const Locals = [];
         const like = [];
         const CommentNum = [];
-        const arr = [];
+        // const arr = [];
+        const ProfilePic = [];
 
         for (let i = 0; i < posts.length; i++) {
             const locals = await User.findOne({
@@ -30,24 +31,31 @@ class PostRepository {
             }); //해당 게시물의 댓글 개수 출력
 
             //user가 좋아요한 게시글 보여주기
-            const FindUserLikeId = await Like.findOne({
-                where: { userId: 2, postId: posts[i].postId }, //userId, postId 조합?이 Like에 있는지
+
+            // const FindUserLikeId = await Like.findOne({
+            //     where: { userId: userId, postId: posts[i].postId }, //userId, postId 조합?이 Like에 있는지
+            //     raw: true,
+            // });
+
+            const profilePic = await User.findOne({
+                where: { userId: posts[i].userId },
                 raw: true,
             });
 
-            if (FindUserLikeId) {
-                //Like에 있는 조합이 로그인된 userid와 post 테이블에 있다면 true,
-                arr.push(true);
-            } else {
-                arr.push(false);
-            }
+            // if (FindUserLikeId) {
+            //     //Like에 있는 조합이 로그인된 userid와 post 테이블에 있다면 true,
+            //     arr.push(true);
+            // } else {
+            //     arr.push(false);
+            // }
 
+            ProfilePic.push(profilePic);
             like.push(temp.length);
             Locals.push(locals);
             CommentNum.push(commentNum.length);
         }
 
-        return { posts, Locals, like, CommentNum, arr };
+        return { posts, Locals, like, CommentNum, ProfilePic };
     };
 
     //댓글 없는 게시글 상세 조회
@@ -139,7 +147,6 @@ class PostRepository {
             where: { postId },
         });
     };
-    
 }
 
 module.exports = PostRepository;

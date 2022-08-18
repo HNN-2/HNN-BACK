@@ -10,21 +10,22 @@ class PostService {
         const Posts = allPost.posts.map((post, i) => {
             const Locals = allPost.Locals;
             const like = allPost.like;
-            const arr = allPost.arr;
+            // const arr = allPost.arr;
+            const ProfilePic = allPost.ProfilePic;
 
             return {
                 postId: post.postId,
                 title: post.title,
                 content: post.content,
-                // nickname: allPost.Locals[i].dataValues.nickname,
-                nickname: post.nickname,
+                nickname: allPost.ProfilePic[i].nickname,
+                // nickname: post.nickname,
                 // profilePicture: allPost.Locals[i].dataValues.profilePicture,
-                profilePicture: post.profilePicture,
+                profilePicture: allPost.ProfilePic[i].profilePicture, //추가
                 // MBTI: allPost.Locals[i].dataValues.MBTI,
                 MBTI: post.MBTI,
                 createdAt: post.createdAt,
                 like: allPost.like[i],
-                likepost: allPost.arr[i],
+                // likepost: allPost.arr[i],
                 commentNum: allPost.CommentNum[i],
                 info: {
                     songTitle: post.songTitle,
