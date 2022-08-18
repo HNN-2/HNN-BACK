@@ -103,7 +103,7 @@ class PostRepository {
             attributes: ["commentId", "content", "userId", "createdAt"],
             // raw: true,
         });
-
+        
         return detailCommentUser;
     };
 
