@@ -19,9 +19,9 @@ class PostService {
                 content: post.content,
                 nickname: allPost.ProfilePic[i].nickname,
                 // profilePicture: allPost.Locals[i].dataValues.profilePicture,
-                profilePicture: allPost.ProfilePic[i].profilePicture, //추가
-                // MBTI: allPost.Locals[i].dataValues.MBTI,
-                MBTI: post.MBTI,
+                profilePicture: allPost.ProfilePic[i].profilePicture,
+                MBTI: allPost.ProfilePic[i].MBTI,
+                // MBTI: post.MBTI,
                 createdAt: post.createdAt,
                 like: allPost.like[i],
                 commentNum: allPost.CommentNum[i],
