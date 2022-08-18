@@ -30,7 +30,6 @@ class PostService {
                     songTitle: post.songTitle,
                     singer: post.singer,
                 },
-                
             };
         });
 
@@ -77,9 +76,9 @@ class PostService {
         MBTI
     ) => {
         //입력 유무 확인
-        if (title || content || imageUrl || songTitle || singer == undefined) {
-            return { success: false };
-        }
+        // if (title || content || imageUrl || songTitle || singer == undefined) {
+        //     return { success: false };
+        // }
 
         await this.postRepository.createPost(
             title,
@@ -141,8 +140,6 @@ class PostService {
         await this.postRepository.deletePost(postId);
         return { success: true, msg };
     };
-
-    
 }
 
 module.exports = PostService;
