@@ -44,7 +44,7 @@ class PostsController {
     createImageLocation = async (req, res, next) => {
         const image = req.file;
         if(!image){
-            res.send({
+            return res.send({
                 success : false,
                 msg : "이미지를 등록해주세요."
             })
@@ -59,7 +59,7 @@ class PostsController {
         const image = req.file
         const {postId} = req.params;
         if(!image){
-            res.send({
+            return res.send({
                 success : false,
                 msg : "이미지를 등록해주세요."
             })
@@ -68,7 +68,7 @@ class PostsController {
         return res.send({
             msg : updateImageLocationData.msg,
             success : updateImageLocationData.success
-            
+
         })
     }
 

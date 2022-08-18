@@ -25,7 +25,7 @@ router.post("/image", upload.single("userfile") , postsController.createImageLoc
 // 이미지 수정
 router.patch("/image/:postId" , upload.single("userfile") , postsController.updateImageLocation)
 // 게시물 수정
-router.patch("/image/:postId",postsController.updatePost);
+router.patch("/post/:postId",postsController.updatePost);
 // router.patch("/:postId", postsController.updatePost);
 
 // 게시물 삭제
