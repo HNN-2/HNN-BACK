@@ -40,6 +40,38 @@ class PostsController {
         res.json({ data: createPostData.msg });
     };
 
+    //이미지 업로드
+    createImageLocation = async (req, res, next) => {
+        const image = req.file;
+        if(!image){
+            res.send({
+                success : false,
+                msg : "이미지를 등록해주세요."
+            })
+        }
+        res.send({
+            success : true,
+            imageUrl : image.location
+        })
+    }
+    // 이미지 수정
+    updateImageLocation = async (req, res, next) => {
+        const image = req.file
+        const {postId} = req.params;
+        if(!image){
+            res.send({
+                success : false,
+                msg : "이미지를 등록해주세요."
+            })
+        }
+        const updateImageLocationData =await this.postService.updateImage(postId, image.location);
+        return res.send({
+            msg : updateImageLocationData.msg,
+            success : updateImageLocationData.success
+            
+        })
+    }
+
     //게시글 수정 222
     updatePost = async (req, res, next) => {
         const { postId } = req.params;

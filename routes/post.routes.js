@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth-middleware");
-const upload = require("../middlewares/uploadImage-middleware")
+const upload = require("../middlewares/postImageUploadMiddleware")
 
 const PostsController = require("../controllers/posts.controller");
 const postsController = new PostsController();
@@ -18,8 +18,14 @@ router.get("/:postId", postsController.getOnePost);
 router.post("/", authMiddleware, postsController.createPost);
 // router.post("/", postsController.createPost);
 
+// 이미지 업로드
+router.post("/image", upload.single("userfile") , postsController.createImageLocation)
+
+
+// 이미지 수정
+router.patch("/image/:postId" , upload.single("userfile") , postsController.updateImageLocation)
 // 게시물 수정
-router.patch("/:postId", authMiddleware, postsController.updatePost);
+router.patch("/image/:postId",postsController.updatePost);
 // router.patch("/:postId", postsController.updatePost);
 
 // 게시물 삭제

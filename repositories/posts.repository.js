@@ -57,7 +57,7 @@ class PostRepository {
 
         return { posts, Locals, like, CommentNum, ProfilePic };
     };
-
+    
     //댓글 없는 게시글 상세 조회
     //Post 와 User, Like 테이블 병합
     findOnePost = async (postId) => {
@@ -129,6 +129,15 @@ class PostRepository {
         return createPostData;
     };
 
+    // 이미지 location 수정
+    updatePostImage = async (postId, imageUrl) => {
+        await Post.update({
+            imageUrl : imageUrl
+        }, {
+            where : {postId}
+        })
+        return
+    }    
     //게시글 수정
     updatePost = async (postId, content, imageUrl, songTitle, singer) => {
         const updatePostData = await Post.update(
