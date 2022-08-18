@@ -25,31 +25,6 @@ class PostsController {
 
     //게시글 생성
     createPost = async (req, res, next) => {
-
-        try {
-            const { title, content, songTitle, singer } = req.body;
-            const { userId, MBTI } = res.locals;
-            
-            const createPostData = await this.postService.createPost(
-                title,
-                content,
-                imageUrl,
-                songTitle,
-                singer,
-                userId,
-                MBTI
-            );
-            res.json({ data: createPostData.msg });
-        } catch (err) {
-            
-            res.json({
-                msg: "빈칸을 다 입력해주세요",
-                err : err
-            });
-        }
-    };
-
-updatePost = async (req, res, next) => {
         const { title, content, imageUrl, songTitle, singer } = req.body;
         const { userId, MBTI } = res.locals;
 
@@ -63,13 +38,12 @@ updatePost = async (req, res, next) => {
             MBTI
         );
         res.json({ data: createPostData.msg });
-
     };
+    
     //게시글 수정
     updatePost = async (req, res, next) => {
         const { postId } = req.params;
         const { title, content, imageUrl, songTitle, singer } = req.body;
-
         const updatePostData = await this.postService.updatePost(
             postId,
             title,
