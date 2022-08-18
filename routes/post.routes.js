@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth-middleware");
+const upload = require("../middlewares/uploadImage-middleware")
 
 const PostsController = require("../controllers/posts.controller");
 const postsController = new PostsController();
@@ -14,7 +15,7 @@ router.get("/",postsController.getAllPosts);
 router.get("/:postId", postsController.getOnePost);
 
 // 게시물 작성
-router.post("/", authMiddleware, postsController.createPost);
+router.post("/", authMiddleware,upload.single('userfile'), postsController.createPost);
 // router.post("/", postsController.createPost);
 
 // 게시물 수정
