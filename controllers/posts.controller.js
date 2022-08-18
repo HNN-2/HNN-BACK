@@ -35,7 +35,7 @@ class PostsController {
         try {
             const { title, content, songTitle, singer } = req.body;
             const { userId, MBTI } = res.locals;
-            const {imageUrl} = req.file
+            
             const createPostData = await this.postService.createPost(
                 title,
                 content,
@@ -47,8 +47,10 @@ class PostsController {
             );
             res.json({ data: createPostData.msg });
         } catch (err) {
+            
             res.json({
                 msg: "빈칸을 다 입력해주세요",
+                err : err
             });
         }
     };
