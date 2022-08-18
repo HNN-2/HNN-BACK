@@ -8,7 +8,7 @@ const postsController = new PostsController();
 
 // 게시물 조회, 로그인 필요 없음
 //http://localhost:8000/post/allpost
-router.get("/",postsController.getAllPosts);
+router.get("/", postsController.getAllPosts); //내가 좋아요한 게시글 보려면 로그인해야함 -> 미들웨어 새로 필요
 
 // 게시물 상세보기, 로그인 필요 없음
 //http://localhost:8000/post/postId
