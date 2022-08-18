@@ -98,14 +98,7 @@ class PostService {
     };
 
     //게시글 수정
-    updatePost = async (
-        postId,
-        title,
-        content,
-        imageUrl,
-        songTitle,
-        singer
-    ) => {
+    updatePost = async (postId, content, imageUrl, songTitle, singer) => {
         // if (
         //     !postId ||
         //     title ||
@@ -118,7 +111,13 @@ class PostService {
         //         success: false,
         //     };
         // } else {
-        await this.postRepository.updatePost(postId, title, content, imageUrl);
+        await this.postRepository.updatePost(
+            postId,
+            content,
+            imageUrl,
+            songTitle,
+            singer
+        );
         return true;
     };
 
