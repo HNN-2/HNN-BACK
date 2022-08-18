@@ -15,44 +15,32 @@ class PostsController {
 
     //상세 게시물 조회
     getOnePost = async (req, res, next) => {
-        try {
-            const { postId } = req.params;
-            const postData = await this.postService.getPost(postId);
+        const { postId } = req.params;
+        const postData = await this.postService.getPost(postId);
 
-            res.json({
-                data: postData,
-            });
-        } catch (err) {
-            res.json({
-                msg: "해당 게시글이 없습니다",
-            });
-            // next(err);
-        }
+        res.json({
+            data: postData,
+        });
     };
 
     //게시글 생성
     createPost = async (req, res, next) => {
-        try {
-            const { title, content, songTitle, singer } = req.body;
-            const { userId, MBTI } = res.locals;
-            const {imageUrl} = req.file
-            const createPostData = await this.postService.createPost(
-                title,
-                content,
-                imageUrl,
-                songTitle,
-                singer,
-                userId,
-                MBTI
-            );
-            res.json({ data: createPostData.msg });
-        } catch (err) {
-            res.json({
-                msg: "빈칸을 다 입력해주세요",
-            });
-        }
-    };
 
+        const { title, content, imageUrl, songTitle, singer } = req.body;
+        const { userId, MBTI } = res.locals;
+
+        const createPostData = await this.postService.createPost(
+            title,
+            content,
+            imageUrl,
+            songTitle,
+            singer,
+            userId,
+            MBTI
+        );
+        res.json({ data: createPostData.msg });
+
+    };
     //게시글 수정
     updatePost = async (req, res, next) => {
         const { postId } = req.params;
