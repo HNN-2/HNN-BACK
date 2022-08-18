@@ -49,7 +49,7 @@ class PostsController {
         }
     };
 
-
+updatePost = async (req, res, next) => {
         const { title, content, imageUrl, songTitle, singer } = req.body;
         const { userId, MBTI } = res.locals;
 
