@@ -112,7 +112,7 @@ class SignController {
                     success: loginData.success,
                     token: loginData.token,
                     MBTI: loginData.MBTI,
-                    ProfilePicture: loginData.profilePicture,
+                    profilePicture: loginData.profilePicture,
                     nickname: loginData.nickname,
                     userId: loginData.userId,
                 });
@@ -243,7 +243,7 @@ class UserController {
                 msg: "유저정보가 수정되었습니다.",
                 nickname : newNickname,
                 MBTI : newMBTI,
-                ProfilePicture : newProfilePicture
+                profilePicture : newProfilePicture
 
             });
         }
