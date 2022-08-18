@@ -130,9 +130,9 @@ class PostRepository {
     };
 
     //게시글 수정
-    updatePost = async (postId, content, imageUrl, songTitle, singer) => {
+    updatePost = async (postId, content, songTitle, singer) => {
         const updatePostData = await Post.update(
-            { content, imageUrl, songTitle, singer },
+            { content, songTitle, singer },
             {
                 where: { postId },
             }
