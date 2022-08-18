@@ -45,15 +45,15 @@ class UserRepository {
         userId,
         password,
         nickname,
-        MBTI,
-        profilePicture
+        MBTI
+        
     ) => {
         const updataUserProfileData = await User.update(
             {
                 password,
                 nickname,
                 MBTI,
-                profilePicture,
+               
             },
             { where: { userId } }
         );
@@ -105,6 +105,13 @@ class UserRepository {
         });
         return { success: true };
     };
+    updateProfilePicture = async (userId,profilePicture) => {
+        await User.update({
+            profilePicture
+        } , {
+            where : {userId}
+        })
+    }
     returnUserLikeOrNot = async (userId, postId) => {
         const data = await Like.findOne({
             where : {userId,postId}
