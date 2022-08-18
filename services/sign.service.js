@@ -308,10 +308,7 @@ class UserService {
         return { success: true, data: PostOfMypage };
     };
 
-    updateProfilePicture = async (profilePicture) => {
-        
-
-    }
+    
 }
 module.exports = {
     SignService,
