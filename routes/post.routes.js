@@ -15,7 +15,7 @@ router.get("/",postsController.getAllPosts);
 router.get("/:postId", postsController.getOnePost);
 
 // 게시물 작성
-router.post("/", authMiddleware,upload.single('userfile'), postsController.createPost);
+router.post("/", authMiddleware, postsController.createPost);
 // router.post("/", postsController.createPost);
 
 // 게시물 수정
