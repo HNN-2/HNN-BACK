@@ -128,13 +128,25 @@ class SignController {
 
     //로그아웃
     logout = async (req, res, next) => {
-        await res.clearCookie("token");
-        res.send({ success: true });
+        try {
+            await res.clearCookie("token");
+            res.send({ success: true });
+        } catch (err) {
+            next(err);
+        }
     };
 
     deleteUser = async (req, res, next) => {
-        const { user } = req.params;
-        const deleteUserData = this.signService;
+        try {
+            const { userId } = req.params;
+            const deleteUserData = await this.signService.deleteUser(userId);
+            res.send({
+                success: deleteUserData.success,
+                msg: deleteUserData.msg,
+            });
+        } catch (err) {
+            next(err);
+        }
     };
 }
 
@@ -143,128 +155,145 @@ class UserController {
     signService = new SignService();
     //아직 테스트 해봐야 함.
     updateUserProfile = async (req, res, next) => {
-        const { userId } = req.params;
-        let {
-            password,
-            newPassword,
-            confirmNewPassword,
-            newNickname,
-            newMBTI,
-            
-        } = req.body;
-        const newProfilePicture = req.file.location;
-        
-        const userStatus = await this.userService.getUserStatus(userId);
-        
-        // const newProfilePicture = req.file; // 사진 파일
-        //입력한 new 비밀번호가 다른 경우
-
-        const checkDupPasswordData = await this.userService.checkPassword(
-            userId,
-            password
-        );
-        if (
-            !checkDupPasswordData.success ||
-            newPassword !== confirmNewPassword
-        ) {
-            return res.send({
-                msg: "비밀번호가 일치하지 않습니다.",
-                success: false,
-            });
-        }
-
-        //입력한 비밀번호가 현재의 비밀번호와 같은 경우
-        const checkDupNewPasswordData = await this.userService.checkPassword(
-            userId,
-            newPassword
-        );
-        if (checkDupNewPasswordData.success && newPassword) {
-            return res.send({
-                msg: "기본 비밀번호와 다르게 설정해주세요.",
-                success: false,
-            });
-        }
-
-        //입력한 비밀번호의 유효성 검사
-        const checkEffectivenessNewPassword =
-            await this.signService.checkPasswordEffectiveness(
+        try {
+            const { userId } = req.params;
+            let {
+                password,
                 newPassword,
-                userStatus.email
+                confirmNewPassword,
+                newNickname,
+                newMBTI,
+            } = req.body;
+
+            const userStatus = await this.userService.getUserStatus(userId);
+
+            // const newProfilePicture = req.file; // 사진 파일
+            //입력한 new 비밀번호가 다른 경우
+
+            const checkDupPasswordData = await this.userService.checkPassword(
+                userId,
+                password
             );
-        if (!checkEffectivenessNewPassword.success && newPassword) {
+            if (
+                !checkDupPasswordData.success ||
+                newPassword !== confirmNewPassword
+            ) {
+                return res.send({
+                    msg: "비밀번호가 일치하지 않습니다.",
+                    success: false,
+                });
+            }
+
+            //입력한 비밀번호가 현재의 비밀번호와 같은 경우
+            const checkDupNewPasswordData =
+                await this.userService.checkPassword(userId, newPassword);
+            if (checkDupNewPasswordData.success && newPassword) {
+                return res.send({
+                    msg: "기본 비밀번호와 다르게 설정해주세요.",
+                    success: false,
+                });
+            }
+
+            //입력한 비밀번호의 유효성 검사
+            const checkEffectivenessNewPassword =
+                await this.signService.checkPasswordEffectiveness(
+                    newPassword,
+                    userStatus.email
+                );
+            if (!checkEffectivenessNewPassword.success && newPassword) {
+                return res.send({
+                    success: checkEffectivenessNewPassword.success,
+                    msg: checkEffectivenessNewPassword.msg,
+                });
+            }
+
+            //닉네임의 유효성, 중복 확인
+            const checkNicknameData =
+                await this.signService.checkNicknameEffectiveness(newNickname);
+
+            if (!checkNicknameData.success && newNickname) {
+                return res.send({
+                    success: checkNicknameData.success,
+                    msg: checkNicknameData.msg,
+                });
+            }
+            
+            if (newMBTI &&newMBTI.length < 4 && newMBTI.length > 0) {
+                return res.send({
+                    success: false,
+                    msg: "MBTI를 확인하세요.",
+                });
+            }
+            switch ("") {
+                case newPassword:
+                    newPassword = password;
+                    break;
+                case newNickname:
+                    newNickname = userStatus.nickname;
+                    break;
+                case newMBTI:
+                    newMBTI = userStatus.MBTI;
+                    break;
+                default:
+                    break;
+            }
+
+            //위의 모든 조건들을 만족한다면 회원정보 업데이트
+            const updateUserProfileData =
+                await this.userService.updateUserProfile(
+                    userId,
+                    newPassword,
+                    newNickname,
+                    newMBTI
+                );
+
+            if (updateUserProfileData.success) {
+                return res.send({
+                    success: updateUserProfileData.success,
+                    msg: "유저정보가 수정되었습니다.",
+                    nickname: newNickname,
+                    MBTI: newMBTI,
+                });
+            }
             return res.send({
-                success: checkEffectivenessNewPassword.success,
-                msg: checkEffectivenessNewPassword.msg,
+                success: true,
             });
+        } catch (err) {
+            next(err);
         }
-
-        //닉네임의 유효성, 중복 확인
-        const checkNicknameData =
-            await this.signService.checkNicknameEffectiveness(newNickname);
-
-        if (!checkNicknameData.success && newNickname) {
-            return res.send({
-                success: checkNicknameData.success,
-                msg: checkNicknameData.msg,
-            });
-        }
-
-        if(newMBTI.length < 4 && newMBTI.length > 0){
-            return res.send({
-                success : false,
-                msg : "MBTI를 확인하세요."
-            })
-        }
-        switch(""){
-            case newPassword : newPassword = password;
-            break;
-            case newNickname : newNickname = userStatus.nickname;
-            break;
-            case newMBTI : newMBTI = userStatus.MBTI;
-            break;
-            default: break
-        }
-        if(newProfilePicture){
-            const newProfilePicture =await this.signService.updateUserProfileData(newProfilePicture.location)
-
-        }
-        //위의 모든 조건들을 만족한다면 회원정보 업데이트
-        const updateUserProfileData = await this.userService.updateUserProfile(
-            userId,
-            newPassword,
-            newNickname,
-            newMBTI,
-            newProfilePicture
-        );
-
-        if (updateUserProfileData.success) {
-            return res.send({
-                success: updateUserProfileData.success,
-                msg: "유저정보가 수정되었습니다.",
-                nickname : newNickname,
-                MBTI : newMBTI,
-                profilePicture : newProfilePicture
-
-            });
-        }
-        return res.send({
-            success: true,
-        });
     };
 
+    updateUserProfilePicture = async (req, res, next) => {
+        try {
+            const  profilePicture  = req.file;
+            
+            const {userId} = req.params;
+            const location = profilePicture.location;
+            const updateUserProfilePictureData =await this.userService.updateUserProfilePicture(userId,location);
+            return res.send({
+                success :updateUserProfilePictureData.success,
+                msg : updateUserProfilePictureData.msg,
+                profilePicture : location
+            })
+        } catch (err) {
+            next(err)
+        }
+    };
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
-        const { userId } = req.params;
-        
-        
-        const postOfLoginUserData = await this.userService.getPostOfLoginUser(
-            userId
-        );
+        try {
+            const { userId } = req.params;
 
-        res.send({
-            success: true,
-            data: postOfLoginUserData.data,
-        });
+            const postOfLoginUserData =
+                await this.userService.getPostOfLoginUser(userId);
+
+            res.send({
+                success: true,
+                data: postOfLoginUserData.data,
+            });
+        } catch (err) {
+            next(err);
+        }
     };
 }
 module.exports = {

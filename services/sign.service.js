@@ -254,8 +254,8 @@ class UserService {
         userId,
         password,
         nickname,
-        MBTI,
-        profilePicture
+        MBTI
+        
     ) => {
         password = this.signService.changePasswordToHash(password);
          await this.signRepository.updateUserProfile(
@@ -263,11 +263,18 @@ class UserService {
             password,
             nickname,
             MBTI,
-            profilePicture
+           
         );
         return { success: true };
     };
 
+    updateUserProfilePicture = async (userId,profilePicture) => {
+       await this.signRepository.updateProfilePicture(userId, profilePicture);
+        return {
+            success:true,
+                msg: "프로필 사진이 변경되었습니다!"
+        }
+    }
     getPostOfLoginUser = async (userId) => {
         const getPostOfLoginUserData =
 
@@ -292,6 +299,7 @@ class UserService {
 
         const PostOfMypage = getPostOfLoginUserData.map((post, idx) => {
             return {
+                postId : post.postId,
                 title: post.title,
                 content: post.content,
                 createdAt: post.createdAt,

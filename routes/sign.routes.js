@@ -34,10 +34,12 @@ router.post("/out", authMiddleware, signController.logout);
 
 //유저 정보 수정
 
-router.patch("/user/:userId",authMiddleware ,upload.single('userfile'), userController.updateUserProfile);
+router.patch("/user/:userId",authMiddleware , userController.updateUserProfile);
 
+router.patch("/user/profilePic/:userId",upload.single('userfile'), userController.updateUserProfilePicture)
 //마이페이지 자신이 작성한 게시물 데이터
-router.get("/user/:userId", upload.single('userfile'),userController.postOfLoginUser);
+router.get("/user/:userId", userController.postOfLoginUser);
+
 
 //회원 탈퇴
 router.delete("/sign/user/:userId");

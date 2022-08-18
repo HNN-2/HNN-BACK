@@ -25,6 +25,7 @@ class PostsController {
 
     //게시글 생성
     createPost = async (req, res, next) => {
+
         const { title, content, imageUrl, songTitle, singer } = req.body;
         const { userId, MBTI } = res.locals;
 
@@ -38,6 +39,7 @@ class PostsController {
             MBTI
         );
         res.json({ data: createPostData.msg });
+
     };
     //게시글 수정
     updatePost = async (req, res, next) => {
