@@ -1,25 +1,31 @@
 const multer = require('multer');
-const fs = require('fs');
-const path = require("path")
-try {
-	fs.readdirSync('uploads'); // 폴더 확인
-} catch(err) {
-	console.error('uploads 폴더가 없습니다. 폴더를 생성합니다.');
-    fs.mkdirSync('uploads'); // 폴더 생성
-}
 
+const AWS = require('aws-sdk')
+const multerS3 = require('multer-s3')
+require("dotenv").config();
+const env = process.env;
+
+AWS.config.update({
+    accessKeyId: env.S3_ACCESS_KEY_ID,
+    secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+ });
+
+const s3 = new AWS.S3();
 
     const upload =multer({
        
-    storage: multer.diskStorage({ // 저장한공간 정보 : 하드디스크에 저장
-        destination(req, file, done) { // 저장 위치
+    storage: multerS3({ // 저장한공간 정보 : 하드디스크에 저장
+        s3 : s3,
+        bucket : "gwonyeong",
+        acl: 'public-read',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key : function (req, file, cb){
             
-            done(null, 'uploads/'); // uploads라는 폴더 안에 저장
-        },
-        filename(req, file, done) { // 파일명을 어떤 이름으로 올릴지
-            const ext = path.extname(file.originalname); // 파일의 확장자
-            done(null, path.basename(file.originalname, ext) +"권영" + Date.now() + ext); // 파일이름 + 날짜 + 확장자 이름으로 저장
+            const {userId} = req.params;
+            cb(null, `${userId}.jpg`)
         }
+        
     }),
     limits: { fileSize: 5 * 1024 * 1024 } // 5메가로 용량 제한
 },     

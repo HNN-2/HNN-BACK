@@ -34,7 +34,7 @@ router.post("/out", authMiddleware, signController.logout);
 
 //유저 정보 수정
 
-router.patch("/user/:userId",upload.single('userfile'),authMiddleware, userController.updateUserProfile);
+router.patch("/user/:userId",authMiddleware ,upload.single('userfile'), userController.updateUserProfile);
 
 //마이페이지 자신이 작성한 게시물 데이터
 router.get("/user/:userId", upload.single('userfile'),userController.postOfLoginUser);

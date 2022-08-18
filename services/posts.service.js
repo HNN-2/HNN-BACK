@@ -27,6 +27,7 @@ class PostService {
                     songTitle: post.songTitle,
                     singer: post.singer,
                 },
+                
             };
             // }
         });
@@ -96,6 +97,8 @@ class PostService {
         await this.postRepository.deletePost(postId);
         return { success: true, msg: "게시물 삭제에 성공했습니다." };
     };
+
+    
 }
 
 module.exports = PostService;

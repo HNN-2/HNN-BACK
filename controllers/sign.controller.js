@@ -152,10 +152,10 @@ class UserController {
             newMBTI,
             
         } = req.body;
-        const newProfilePicture = req.file;
-        console.log(newProfilePicture)
+        const newProfilePicture = req.file.location;
+        
         const userStatus = await this.userService.getUserStatus(userId);
-        console.log(userStatus.password)
+        
         // const newProfilePicture = req.file; // 사진 파일
         //입력한 new 비밀번호가 다른 경우
 
@@ -224,12 +224,17 @@ class UserController {
             break;
             default: break
         }
+        if(newProfilePicture){
+            const newProfilePicture =await this.signService.updateUserProfileData(newProfilePicture.location)
+
+        }
         //위의 모든 조건들을 만족한다면 회원정보 업데이트
         const updateUserProfileData = await this.userService.updateUserProfile(
             userId,
             newPassword,
             newNickname,
-            newMBTI
+            newMBTI,
+            newProfilePicture
         );
 
         if (updateUserProfileData.success) {
@@ -238,7 +243,7 @@ class UserController {
                 msg: "유저정보가 수정되었습니다.",
                 nickname : newNickname,
                 MBTI : newMBTI,
-                file : newProfilePicture
+                ProfilePicture : newProfilePicture
 
             });
         }
@@ -250,7 +255,7 @@ class UserController {
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
         const { userId } = req.params;
-        console.log(req.params, req.body)
+        
         
         const postOfLoginUserData = await this.userService.getPostOfLoginUser(
             userId

@@ -119,6 +119,7 @@ class PostRepository {
             where: { postId },
         });
     };
+    
 }
 
 module.exports = PostRepository;
