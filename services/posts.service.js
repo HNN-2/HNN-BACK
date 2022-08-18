@@ -101,11 +101,10 @@ class PostService {
         }
     }
     //게시글 수정
-    updatePost = async (postId, content, imageUrl, songTitle, singer) => {
+    updatePost = async (postId, content, songTitle, singer) => {
         await this.postRepository.updatePost(
             postId,
             content,
-            imageUrl,
             songTitle,
             singer
         );

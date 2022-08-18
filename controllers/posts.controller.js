@@ -75,11 +75,10 @@ class PostsController {
     //게시글 수정 222
     updatePost = async (req, res, next) => {
         const { postId } = req.params;
-        const { content, imageUrl, songTitle, singer } = req.body;
+        const { content, songTitle, singer } = req.body;
         const updatePostData = await this.postService.updatePost(
             postId,
             content,
-            imageUrl,
             songTitle,
             singer
         );
