@@ -128,13 +128,22 @@ class SignController {
 
     //로그아웃
     logout = async (req, res, next) => {
-        await res.clearCookie("token");
-        res.send({ success: true });
+        try{await res.clearCookie("token");
+        res.send({ success: true });}
+        catch(err){
+            next(err)
+        }
     };
 
     deleteUser = async (req, res, next) => {
-        const { user } = req.params;
-        const deleteUserData = this.signService;
+        try{const { userId } = req.params;
+        const deleteUserData = await this.signService.deleteUser(userId);
+        res.send({
+            success : deleteUserData.success,
+            msg : deleteUserData.msg
+        })}catch(err){
+            next(err)
+        }
     };
 }
 
@@ -143,7 +152,7 @@ class UserController {
     signService = new SignService();
     //아직 테스트 해봐야 함.
     updateUserProfile = async (req, res, next) => {
-        const { userId } = req.params;
+        try{const { userId } = req.params;
         let {
             password,
             newPassword,
@@ -152,6 +161,7 @@ class UserController {
             newMBTI,
             
         } = req.body;
+        console.log(req.file)
         const newProfilePicture = req.file.location;
         
         const userStatus = await this.userService.getUserStatus(userId);
@@ -246,12 +256,14 @@ class UserController {
         }
         return res.send({
             success: true,
-        });
+        });}catch(err){
+            next(err)
+        }
     };
 
     //내가 쓴 글 보기
     postOfLoginUser = async (req, res, next) => {
-        const { userId } = req.params;
+        try{const { userId } = req.params;
         
         
         const postOfLoginUserData = await this.userService.getPostOfLoginUser(
@@ -261,7 +273,9 @@ class UserController {
         res.send({
             success: true,
             data: postOfLoginUserData.data,
-        });
+        });}catch(err){
+            next(err)
+        }
     };
 }
 module.exports = {

@@ -292,6 +292,7 @@ class UserService {
 
         const PostOfMypage = getPostOfLoginUserData.map((post, idx) => {
             return {
+                postId : post.postId,
                 title: post.title,
                 content: post.content,
                 createdAt: post.createdAt,
