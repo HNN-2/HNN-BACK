@@ -224,10 +224,7 @@ class UserController {
             break;
             default: break
         }
-        if(newProfilePicture){
-            const newProfilePicture =await this.signService.updateUserProfileData(newProfilePicture.location)
-
-        }
+        
         //위의 모든 조건들을 만족한다면 회원정보 업데이트
         const updateUserProfileData = await this.userService.updateUserProfile(
             userId,
