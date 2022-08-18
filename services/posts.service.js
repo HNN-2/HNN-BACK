@@ -18,14 +18,12 @@ class PostService {
                 title: post.title,
                 content: post.content,
                 nickname: allPost.ProfilePic[i].nickname,
-                // nickname: post.nickname,
                 // profilePicture: allPost.Locals[i].dataValues.profilePicture,
                 profilePicture: allPost.ProfilePic[i].profilePicture, //추가
                 // MBTI: allPost.Locals[i].dataValues.MBTI,
                 MBTI: post.MBTI,
                 createdAt: post.createdAt,
                 like: allPost.like[i],
-                // likepost: allPost.arr[i],
                 commentNum: allPost.CommentNum[i],
                 info: {
                     songTitle: post.songTitle,
@@ -46,25 +44,22 @@ class PostService {
 
     //게시글 상세조회
     getPost = async (postId) => {
-        if (!postId) {
-            return { success: false };
-        } else {
-            const getPostData = await this.postRepository.findOnePost(postId);
-            const getCommentData = await this.postRepository.findComments(
-                postId
-            );
-            const postLikeData = getPostData.dataValues.Likes;
-            const commentUserDate = getPostData.dataValues.Users;
+        // if (!postId) {
+        //     return { success: false };
+        // } else {
+        const getPostData = await this.postRepository.findOnePost(postId);
+        const getCommentData = await this.postRepository.findComments(postId);
+        const postLikeData = getPostData.dataValues.Likes;
+        const commentUserDate = getPostData.dataValues.Users;
 
-            delete getPostData.dataValues.Likes; //배열 지우는 방법
+        delete getPostData.dataValues.Likes; //배열 지우는 방법
 
-            return {
-                success: true,
-                poster: getPostData,
-                like: postLikeData.length,
-                commenter: getCommentData,
-            };
-        }
+        return {
+            success: true,
+            poster: getPostData,
+            like: postLikeData.length,
+            commenter: getCommentData,
+        };
     };
     //게시글 생성
     createPost = async (
